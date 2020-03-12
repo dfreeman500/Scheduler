@@ -26,7 +26,7 @@
 ## **Milestones**
 #### [ ] Create a GitHub Repo and Start on a Project Plan
 #### [ ] Scaffold a new .NET Core MVC Application
-#### [ ] Model Relational [Example Project] Data
+#### [ ] Model Relational Scheduler Data
 #### [ ] Generating a Code First Database
 #### [ ] Creating CRUD Controllers
 #### [ ]  Creating CRUD Views
