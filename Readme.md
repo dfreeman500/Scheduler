@@ -28,7 +28,7 @@ The scheduler will be able to view the schedules and edit/cancel appointments . 
 
 
 ## **Milestones**
-- [ ] Create a GitHub Repo and Start on a Project Plan
+- [x] Create a GitHub Repo and Start on a Project Plan
 - [ ] Scaffold a new .NET Core MVC Application
 - [ ] Model Relational Scheduler Data
 - [ ] Generating a Code First Database
