@@ -18,7 +18,8 @@ The scheduler will be able to view the schedules and edit/cancel appointments . 
 * DB: SQL
 * Front End: HTML/CSS, Bootstrap/ JQuery
 
-
+## **Getting Started**
+* At this point I'm not sure how the MVC will all come together. I would like to update this as I learn more about MVC.
 
 ## **Features**
 
