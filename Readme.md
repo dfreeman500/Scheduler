@@ -4,7 +4,7 @@
 A scheduling program that allows time slots to be filled on a person's schedule for a day. For example representative A may work from 8-5, representative B might work from 10-7, and representative C might work from 8-12. If a client requests a 9 o'clock appointment, the software should state who if anyone has an opening on the schedule. The scheduling person can then choose which representative to place the appointment under. 
 
 The scheduler will be able to view the schedules and edit/cancel appointments . The schedule will persist and the appointments will be available upon closing and reopening of the software.                                                                 
-#### Possible Improvements        
+#### Possible Features to be added later        
 * Multiple Days on Schedule
         
 
