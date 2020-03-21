@@ -30,7 +30,7 @@ The scheduler will be able to view the schedules and edit/cancel appointments . 
 
 ## **Milestones**
 - [x] Create a GitHub Repo and Start on a Project Plan
-- [ ] Scaffold a new .NET Core MVC Application
+- [x] Scaffold a new .NET Core MVC Application
 - [ ] Model Relational Scheduler Data
 - [ ] Generating a Code First Database
 - [ ] Creating CRUD Controllers
