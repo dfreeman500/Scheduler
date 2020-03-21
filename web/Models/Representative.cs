@@ -9,7 +9,7 @@ namespace web.Models
     {
         public Guid Id { get; set; } //GUID or UUID is an acronym for 'Globally Unique Identifier' or 'Universally Unique Identifier'. It is a 128-bit integer number used to identify resources. 
     }
-    public class Representative : Base // A table of representatives or employee. Each employee will have multipel appointments
+    public class Representative : Base // A table of representatives or employees. Each employee will have multiple appointments
     {
         public ICollection<Appointment> Appointments { get; set; } //a collection of a appointments
     }
@@ -26,7 +26,7 @@ namespace web.Models
     public class Client //A table of clients
     {
         public string FirstName { get; set; }
-        public string FirstName { get; set; }
+        public string LastName { get; set; }
         public int PhoneNumber { get; set; } //from int, can format later if want to ( ) -
     }
 }
