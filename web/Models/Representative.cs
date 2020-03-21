@@ -15,17 +15,18 @@ namespace web.Models
     }
     public class Appointment : Base //a table of appointments
     {
-        public Guid ClientId { get; set; }
+        public Guid AppointmentId { get; set; }
         public Client Client { get; set; }
-        public string Notes { get; set; } // Ex: put in needs or preferences for that specific appointment
-        public DateTime RequestedTime{get; set;} 
-        //I might use an int for this instead. I want to be able to do something like Client A wants an appointment time of 9 and determine who if anyone is available.
+        public string AppointmentNotes { get; set; } // Ex: put in needs or preferences for that specific appointment
+        public DateTime RequestedTime{get; set;} //I might use an int for this instead. I want to be able to do something like Client A wants an appointment time of 9 and determine who if anyone is available.
+        public DateTime ScheduledTime {get; set;}// This is the actual appointment set by the scheduler onto the representative's schedule
+
     }
 
     public class Client //A table of clients
     {
         public string FirstName { get; set; }
         public string FirstName { get; set; }
-        public int PhoneNumber { get; set; } //Can format later from int data type if want to
+        public int PhoneNumber { get; set; } //from int, can format later if want to ( ) -
     }
 }
