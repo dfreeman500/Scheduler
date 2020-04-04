@@ -15,10 +15,10 @@ namespace web.Data
         // }
         
         //Register Employees table
-        DbSet<Employee> Employees { get; set; }
+        public DbSet<Employee> Employees { get; set; }
         
           //Register Appointments table
-        DbSet<Appointment> Appointments { get; set; }
+        public DbSet<Appointment> Appointments { get; set; }
      
     }
 }
