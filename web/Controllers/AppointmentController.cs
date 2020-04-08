@@ -48,7 +48,7 @@ namespace web.Controllers
         // GET: Appointment/Create
         public IActionResult Create()
         {
-            ViewData["EmployeeId"] = new SelectList(_context.Employees, "Id", "FirstName");
+            ViewData["EmployeeId"] = new SelectList(_context.Employees, "Id", "FullName");
             return View();
         }
 
@@ -66,7 +66,7 @@ namespace web.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EmployeeId"] = new SelectList(_context.Employees, "Id", "FirstName", appointment.EmployeeId);
+            ViewData["EmployeeId"] = new SelectList(_context.Employees, "Id", "FullName", appointment.EmployeeId);
             return View(appointment);
         }
 
@@ -83,7 +83,7 @@ namespace web.Controllers
             {
                 return NotFound();
             }
-            ViewData["EmployeeId"] = new SelectList(_context.Employees, "Id", "FirstName", appointment.EmployeeId);
+            ViewData["EmployeeId"] = new SelectList(_context.Employees, "Id", "FullName", appointment.EmployeeId);
             return View(appointment);
         }
 
@@ -119,7 +119,7 @@ namespace web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EmployeeId"] = new SelectList(_context.Employees, "Id", "FirstName", appointment.EmployeeId);
+            ViewData["EmployeeId"] = new SelectList(_context.Employees, "Id", "FullName", appointment.EmployeeId);
             return View(appointment);
         }
 

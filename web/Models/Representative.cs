@@ -12,6 +12,15 @@ namespace web.Models
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
+
+        public string FullName 
+        {
+            get
+            {
+                return FirstName + " " + LastName;
+            }
+
+        }
         public ICollection<Appointment> Appointments { get; set; } //a collection of a appointments
     }
     // A table of appointments
