@@ -12,7 +12,9 @@ namespace web.Models
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-
+        
+        public DateTime StartTime{get;set;}
+        public DateTime EndStart{get;set;}
         public string FullName 
         {
             get
