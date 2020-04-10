@@ -33,5 +33,5 @@ The scheduler will be able to view the schedules and edit/cancel appointments . 
 - [x] Scaffold a new .NET Core MVC Application
 - [x] Model Relational Scheduler Data
 - [x] Generating a Code First Database
-- [ ] Creating CRUD Controllers
-- [ ]  Creating CRUD Views
+- [x] Creating CRUD Controllers
+- [x]  Creating CRUD Views
