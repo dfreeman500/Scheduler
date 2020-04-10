@@ -14,7 +14,7 @@ namespace web.Models
         public string LastName { get; set; }
         
         public DateTime StartTime{get;set;}
-        public DateTime EndStart{get;set;}
+        public DateTime EndTime{get;set;}
         public string FullName 
         {
             get

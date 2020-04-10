@@ -87,7 +87,7 @@ namespace web.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("FirstName,LastName,Id")] Employee employee)
+        public async Task<IActionResult> Edit(Guid id,  Employee employee)
         {
             if (id != employee.Id)
             {
