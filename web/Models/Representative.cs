@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 namespace web.Models
 {
     public class Base
@@ -10,10 +11,13 @@ namespace web.Models
     // Each employee will have multiple appointments
     public class Employee : Base // Base Generates Employee.Id Guid for identifing an Employee
     {
+        [Display(Name = "First Name")] 
         public string FirstName { get; set; }
+        [Display(Name = "Last Name")]
         public string LastName { get; set; }
-        
+        [Display(Name = "Start Time")]
         public DateTime StartTime{get;set;}
+        [Display(Name = "End Time")]
         public DateTime EndTime{get;set;}
         public string FullName 
         {
@@ -30,10 +34,13 @@ namespace web.Models
     {
         // Single use customer
         public string Name { get; set; }
+        [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }
+        [Display(Name = "Appointment Notes")]
         public string AppointmentNotes { get; set; }
         public Guid EmployeeId { get; set; }
         public Employee Employee { get; set; }
+        [Display(Name = "Requested Time")]
         public DateTime RequestedTime { get; set; }
     }
 }
