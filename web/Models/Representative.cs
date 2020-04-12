@@ -11,13 +11,15 @@ namespace web.Models
     // Each employee will have multiple appointments
     public class Employee : Base // Base Generates Employee.Id Guid for identifing an Employee
     {
-        [Display(Name = "First Name")] 
+        [Display(Name = "First Name")] //Display attributes so it will show correctly in view/webpage
         public string FirstName { get; set; }
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
         [Display(Name = "Start Time")]
+        [DataType(DataType.Time)]
         public DateTime StartTime{get;set;}
         [Display(Name = "End Time")]
+        [DataType(DataType.Time)]
         public DateTime EndTime{get;set;}
         public string FullName 
         {
