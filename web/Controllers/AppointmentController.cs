@@ -59,6 +59,24 @@ namespace web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Name,PhoneNumber,AppointmentNotes,EmployeeId,RequestedTime,Id")] Appointment appointment)
         {
+            //string justTime = appointment.RequestedTime.ToString("hh:mm tt");
+            //string employeeStartTime = Employee.StartTime;
+            //var employee = _context.Find(EmployeeId);
+            var employee = _context.Employees.Find(appointment.EmployeeId);
+            var employeeStartTime = employee.StartTime;
+
+            //Searches for other appointments with the same time and employee (ie.for double booking events)
+            var isDoubleBooked = _context.Appointments//.Find(appointment.RequestedTime);
+                .Where(st => st.RequestedTime == appointment.RequestedTime)
+                .Where(st=> st.EmployeeId == appointment.EmployeeId)
+                .SingleOrDefault();
+            
+
+            if(isDoubleBooked != null) //if requested time would double book the employee raise an error
+            {
+                ModelState.AddModelError("RequestedTime", "The requested appointment overlaps with another appointment for this employee");
+
+            }
             if (ModelState.IsValid)
             {
                 appointment.Id = Guid.NewGuid();
