@@ -62,7 +62,12 @@ namespace web.Controllers
         {
 
             var employee = _context.Employees.Find(appointment.EmployeeId);
-            var employeeStartTime = employee.StartTime;
+            var employeeStartTime = employee.StartTime.TimeOfDay;
+            DateTime myTime = default(DateTime).Add(employeeStartTime);
+            // var wholeDate = DateTime.Parse(employeeStartTime);
+            // var time = wholeDate - wholeDate.Date;
+
+
 
            //Searches for other appointments with the same time and employee (ie.for double booking events)
             var isDoubleBooked = _context.Appointments
@@ -70,10 +75,42 @@ namespace web.Controllers
                 .Where(st=> st.EmployeeId == appointment.EmployeeId)
                 .SingleOrDefault();
             
+            //if records are found indicating a double book event
+            //Make suggestion for possible appointments with employees
+            // string list_of= "";
+            // if(isDoubleBooked != null) 
+            // {
+                
+            //     var listOfEmployeesWithAvailableTime = _context.Appointments
+            //         .Where(lo => lo.RequestedTime != appointment.RequestedTime)
+            //         .Where(lo => lo.EmployeeId != appointment.EmployeeId)
+            //         .ToList();
+                
+            //     list_of= "";
+            //     foreach(var emp in listOfEmployeesWithAvailableTime)
+            //     {
+            //         list_of += emp?.Employee.FullName;
+
+            //     }
+            // }
+            
+            //makes a list of all available employees at the time someone is making an appointment
+            var listOfAllEmployees = _context.Employees.Select(x=>x.FullName).ToList();
+
+            var appointmentsWithOverlappingTimes = _context.Appointments
+                .Where(aw => aw.RequestedTime == appointment.RequestedTime)
+                .ToList();
+
+            foreach(var emp in appointmentsWithOverlappingTimes)
+            {
+                listOfAllEmployees.Remove(emp.Employee.FullName);
+            }    
+
+            string availableEmployees = string.Join( ", ", listOfAllEmployees);
 
             if(isDoubleBooked != null) //if records are found, then requested time would double book the employee - raise an error
             {
-                ModelState.AddModelError("RequestedTime", "The requested appointment overlaps with another appointment for this employee");
+                ModelState.AddModelError("RequestedTime", "This date and time would result in doublebooking. Choose another Date/time. Available employees at this time slot: " + availableEmployees);
             }
  
 
@@ -117,7 +154,15 @@ namespace web.Controllers
                 .Where(st => st.RequestedTime == appointment.RequestedTime)
                 .Where(st=> st.EmployeeId == appointment.EmployeeId)
                 .SingleOrDefault();
-            
+
+//             An unhandled exception occurred while processing the request.
+//             InvalidOperationException: The instance of entity type 'Appointment' cannot be tracked because another instance with the same key value for {'Id'} is already being tracked. When attaching existing entities, ensure that only one entity instance with a given key value is attached. Consider using 'DbContextOptionsBuilder.EnableSensitiveDataLogging' to see the conflicting key values.
+//             
+//             var copyOfId = appointment.Id; //so doesn't throw an error
+//             var entryBeforeEdit = _context.Appointments
+//                 .Where(eb => eb.Id == appointment.Id)
+//                 .SingleOrDefault();
+//              if(isDoubleBooked != null && entryBeforeEdit == null ) //if records are found, then requested time would double book the employee - raise an error
 
             if(isDoubleBooked != null) //if records are found, then requested time would double book the employee - raise an error
             {
