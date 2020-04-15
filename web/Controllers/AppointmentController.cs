@@ -60,17 +60,20 @@ namespace web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Name,PhoneNumber,AppointmentNotes,EmployeeId,RequestedTime,Id")] Appointment appointment)
         {
+            //Gives info to modelState addModelError - allows for determining out range and double booking requests
+            var employee = _context.Employees.Find(appointment.EmployeeId); 
+ 
+            //Determines that RequestedTime is within time range for employee
+            bool isWithin = (appointment.RequestedTime.TimeOfDay > employee.StartTime.TimeOfDay || appointment.RequestedTime.TimeOfDay == employee.StartTime.TimeOfDay ) && (appointment.RequestedTime.TimeOfDay < employee.EndTime.TimeOfDay || appointment.RequestedTime.TimeOfDay == employee.EndTime.TimeOfDay );
+            
+            //Raise an error if requested time is outside of employee's working window
+            if(isWithin == false) 
+            {
+                ModelState.AddModelError("RequestedTime", employee.FullName + " only works between " + employee.StartTime.TimeOfDay + " and " + employee.EndTime.TimeOfDay);
+            }
 
-            var employee = _context.Employees.Find(appointment.EmployeeId); //Gives info to modelState addModelError
-            var employeeStartTime = employee.StartTime.TimeOfDay;
-            DateTime myTime = default(DateTime).Add(employeeStartTime);
-            // var wholeDate = DateTime.Parse(employeeStartTime);
-            // var time = wholeDate - wholeDate.Date;
-
-
-
-           //Searches for other appointments with the same time and employee (ie.for double booking events)
-            var isDoubleBooked = _context.Appointments
+           //Searches for another appointment with the same time and employee (ie.for double booking event)
+            var doubleBookings = _context.Appointments
                 .Where(st => st.RequestedTime == appointment.RequestedTime)
                 .Where(st=> st.EmployeeId == appointment.EmployeeId)
                 .SingleOrDefault();
@@ -78,20 +81,21 @@ namespace web.Controllers
             //makes a list of all available employees at the time someone is making an appointment
             var listOfAllEmployees = _context.Employees.Select(x=>x.FullName).ToList();
 
-            var appointmentsWithOverlappingTimes = _context.Appointments
+            //Finds appointments across all employees with overlapping times
+            var appointmentsWithOverlappingTimes = _context.Appointments 
                 .Where(aw => aw.RequestedTime == appointment.RequestedTime)
                 .ToList();
 
+            //makes it so that only employees with empty time slots during requested time are left in list
             foreach(var emp in appointmentsWithOverlappingTimes)
             {
                 listOfAllEmployees.Remove(emp.Employee.FullName);
             }    
 
-            string availableEmployees = string.Join( ", ", listOfAllEmployees); //Finds employees at the time slot who are free
-
-            if(isDoubleBooked != null) //if records are found, then requested time would double book the employee - raise an error
+            //raise error if doubleBookings found an entry
+            if(doubleBookings != null) 
             {
-                ModelState.AddModelError("RequestedTime", employee.FullName + " is booked during that time slot. Other employees available: " + listOfAllEmployees.Count + " | " + availableEmployees);
+                ModelState.AddModelError("RequestedTime", employee.FullName + " is booked during that time slot. Other employees available: " + listOfAllEmployees.Count + " | " + string.Join( ", ", listOfAllEmployees));
             }
  
 
