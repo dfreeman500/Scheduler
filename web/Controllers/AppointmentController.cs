@@ -61,7 +61,7 @@ namespace web.Controllers
         public async Task<IActionResult> Create([Bind("Name,PhoneNumber,AppointmentNotes,EmployeeId,RequestedTime,Id")] Appointment appointment)
         {
 
-            var employee = _context.Employees.Find(appointment.EmployeeId);
+            var employee = _context.Employees.Find(appointment.EmployeeId); //Gives info to modelState addModelError
             var employeeStartTime = employee.StartTime.TimeOfDay;
             DateTime myTime = default(DateTime).Add(employeeStartTime);
             // var wholeDate = DateTime.Parse(employeeStartTime);
@@ -74,26 +74,7 @@ namespace web.Controllers
                 .Where(st => st.RequestedTime == appointment.RequestedTime)
                 .Where(st=> st.EmployeeId == appointment.EmployeeId)
                 .SingleOrDefault();
-            
-            //if records are found indicating a double book event
-            //Make suggestion for possible appointments with employees
-            // string list_of= "";
-            // if(isDoubleBooked != null) 
-            // {
-                
-            //     var listOfEmployeesWithAvailableTime = _context.Appointments
-            //         .Where(lo => lo.RequestedTime != appointment.RequestedTime)
-            //         .Where(lo => lo.EmployeeId != appointment.EmployeeId)
-            //         .ToList();
-                
-            //     list_of= "";
-            //     foreach(var emp in listOfEmployeesWithAvailableTime)
-            //     {
-            //         list_of += emp?.Employee.FullName;
-
-            //     }
-            // }
-            
+                      
             //makes a list of all available employees at the time someone is making an appointment
             var listOfAllEmployees = _context.Employees.Select(x=>x.FullName).ToList();
 
@@ -106,11 +87,11 @@ namespace web.Controllers
                 listOfAllEmployees.Remove(emp.Employee.FullName);
             }    
 
-            string availableEmployees = string.Join( ", ", listOfAllEmployees);
+            string availableEmployees = string.Join( ", ", listOfAllEmployees); //Finds employees at the time slot who are free
 
             if(isDoubleBooked != null) //if records are found, then requested time would double book the employee - raise an error
             {
-                ModelState.AddModelError("RequestedTime", "This date and time would result in doublebooking. Choose another Date/time. Available employees at this time slot: " + availableEmployees);
+                ModelState.AddModelError("RequestedTime", employee.FullName + " is booked during that time slot. Other employees available: " + listOfAllEmployees.Count + " | " + availableEmployees);
             }
  
 
