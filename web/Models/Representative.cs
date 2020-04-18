@@ -40,6 +40,7 @@ namespace web.Models
         public string PhoneNumber { get; set; }
         [Display(Name = "Appointment Notes")]
         public string AppointmentNotes { get; set; }
+        [Display(Name = "Employee")]
         public Guid EmployeeId { get; set; }
         public Employee Employee { get; set; }
         [Display(Name = "Requested Time")]
