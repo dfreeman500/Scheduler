@@ -46,12 +46,18 @@ namespace web.Controllers
         }
 
         // GET: Appointment/Create
-        public IActionResult Create()
+        // public IActionResult Create()
+        // {
+        //     ViewData["EmployeeId"] = new SelectList(_context.Employees, "Id", "FullName");
+        //     return View();
+        // }
+     // [HttpPost]
+              public IActionResult Create(Guid id, DateTime time)
         {
-            ViewData["EmployeeId"] = new SelectList(_context.Employees, "Id", "FullName");
-            return View();
-        }
-        
+            ViewData["EmployeeId"] = new SelectList(_context.Employees, "Id", "FullName" ); 
+            return View(new Appointment {RequestedTime=time, EmployeeId = id});
+
+        }  
 
         // POST: Appointment/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 

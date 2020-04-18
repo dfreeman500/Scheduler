@@ -2,6 +2,8 @@
     ViewData["Title"] = "Home Page";
 }
 
+@model IEnumerable<web.Models.Employee>
+
 <div class="text-center">
     <h1 class="display-4">Welcome To the Scheduler</h1>
     <p></p>
@@ -10,3 +12,76 @@
     <h6>Well, soon to be a decent scheduler on earth</h6>
     @*<p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>*@
 </div>
+
+<br/>
+
+@*@model IEnumerable<web.Models.Employee>*@
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Time 
+            </th>
+            @foreach(var emp in Model)  @*Need to grab list of Employees not model for appointments*@
+            {
+                <th>
+                @emp.FullName
+                </th>      
+            }
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+
+@{
+    //List<string> Times = new List<string>(); 
+//        string[] times = { "12 am", "1 am", "2 am", "3 am", "4 am", "5 am", "6 am", "7 am", "8 am", "9 am", "10 am", "11 am", "12 pm", "1 pm", "2 pm", "3 pm", "4 pm", "5 pm", "6 pm", "7 pm", "8 pm", "9 pm", "10 pm", "11 pm" };    
+
+var today = DateTime.Now;
+var times = new List<DateTime> {
+    new DateTime(today.Year,today.Month,today.Day, 0, 0, 0),
+    new DateTime(today.Year,today.Month,today.Day, 1, 0, 0), 
+    new DateTime(today.Year,today.Month,today.Day, 2, 0, 0), 
+    new DateTime(today.Year,today.Month,today.Day, 3, 0, 0), 
+    new DateTime(today.Year,today.Month,today.Day, 4, 0, 0), 
+    new DateTime(today.Year,today.Month,today.Day, 5, 0, 0), 
+    new DateTime(today.Year,today.Month,today.Day, 6, 0, 0), 
+    new DateTime(today.Year,today.Month,today.Day, 7, 0, 0), 
+    new DateTime(today.Year,today.Month,today.Day, 8, 0, 0), 
+    new DateTime(today.Year,today.Month,today.Day, 9, 0, 0), 
+    new DateTime(today.Year,today.Month,today.Day, 10, 0, 0), 
+    new DateTime(today.Year,today.Month,today.Day, 11, 0, 0), 
+    new DateTime(today.Year,today.Month,today.Day, 12, 0, 0), 
+    new DateTime(today.Year,today.Month,today.Day, 13, 0, 0), 
+    new DateTime(today.Year,today.Month,today.Day, 14, 0, 0), 
+    new DateTime(today.Year,today.Month,today.Day, 15, 0, 0), 
+    new DateTime(today.Year,today.Month,today.Day, 16, 0, 0), 
+    new DateTime(today.Year,today.Month,today.Day, 17, 0, 0), 
+    new DateTime(today.Year,today.Month,today.Day, 18, 0, 0), 
+    new DateTime(today.Year,today.Month,today.Day, 19, 0, 0), 
+    new DateTime(today.Year,today.Month,today.Day, 20, 0, 0), 
+    new DateTime(today.Year,today.Month,today.Day, 21, 0, 0), 
+    new DateTime(today.Year,today.Month,today.Day, 22, 0, 0), 
+    new DateTime(today.Year,today.Month,today.Day, 23, 0, 0), 
+    };
+}
+
+
+
+
+@foreach (var item in times) {
+        <tr>
+            <td>
+                @item.ToString("hh:mm tt")
+            </td>
+            @foreach(var emp in Model)
+            {
+                <td>
+                     <a asp-action="Create" asp-route-id="@emp.Id" asp-route-time="@item" asp-controller="Appointment">Add</a> 
+                    @* <a href="https://localhost:5001/Appointment/Create">Add</a> *@
+                    @*if appointment time for the employee matches up put in name of client in form of 'edit' link*@
+                </td>
+            }
+        </tr>
+}    </tbody>
+</table>
