@@ -75,7 +75,7 @@ namespace web.Controllers
             //Raise an error if requested time is outside of employee's working window
             if(isWithin == false) 
             {
-                ModelState.AddModelError("RequestedTime", employee.FullName + " only works between " + employee.StartTime.TimeOfDay + " and " + employee.EndTime.TimeOfDay);
+                ModelState.AddModelError("RequestedTime", employee.FullName + " only works between " + employee.StartTime.ToString("hh:mm tt") + " and " + employee.EndTime.ToString("hh:mm tt"));
             }
 
            //Searches for another appointment with the same time and employee (ie.for double booking event)
