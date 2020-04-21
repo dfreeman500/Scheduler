@@ -7,6 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using web.Data;
 using web.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Data;
+
+
+
+
+
 
 namespace web.Controllers
 {
@@ -22,10 +29,10 @@ namespace web.Controllers
 
         public IActionResult Index()
         {
-            var employees = _context.Employees.ToList();
+            var empl = _context.Appointments.Include(a => a.Employee); //adds the related employee info
+            ViewBag.Employees = _context.Employees.ToList();  
+            return View(empl.ToList());        }
 
-            return View(employees);
-        }
 
         public IActionResult Privacy()
         {

@@ -9,10 +9,7 @@ namespace web.Data
         {
 
         }
-        //Configure Technology and ExampleProject Foreign Keys for the ExampleProjectTechnology Table 
-        // protected override void OnModelCreating(ModelBuilder modelBuilder) {
-        //     modelBuilder.Entity<ExampleProjectTechnology>().HasKey(t => new { t.TechnologyId, t.ExampleProjectId });
-        // }
+
         
         //Register Employees table
         public DbSet<Employee> Employees { get; set; }

@@ -2,27 +2,33 @@
     ViewData["Title"] = "Home Page";
 }
 
-@model IEnumerable<web.Models.Employee>
+@model IEnumerable<web.Models.Appointment>
+    
 
 <div class="text-center">
     <h1 class="display-4">Welcome To the Scheduler</h1>
     <p></p>
     <h4> The greatest scheduler on earth...</h4>
     <p></p>
-    <h6>Well, soon to be a decent scheduler on earth</h6>
+
     @*<p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>*@
 </div>
 
 <br/>
+ @{
+    var calendarDate = DateTime.Today;
+    }
+<h2>  @calendarDate.ToString("D")  </h2>                        
+<br/>
 
-@*@model IEnumerable<web.Models.Employee>*@
+
 <table class="table">
     <thead>
         <tr>
             <th>
                 Time 
             </th>
-            @foreach(var emp in Model)  @*Need to grab list of Employees not model for appointments*@
+            @foreach(var emp in ViewBag.Employees)  @*Need to grab list of Employees not model for appointments*@
             {
                 <th>
                 @emp.FullName
@@ -32,6 +38,9 @@
         </tr>
     </thead>
     <tbody>
+
+
+
 
 @{
     //List<string> Times = new List<string>(); 
@@ -69,18 +78,38 @@ var times = new List<DateTime> {
 
 
 
-@foreach (var item in times) {
+@foreach (var timeSlot in times) {
         <tr>
-            <td>
-                @item.ToString("hh:mm tt")
+            <td style="background-color:#dadce0;">
+                @timeSlot.ToString("hh:mm tt")
             </td>
-            @foreach(var emp in Model)
+            @foreach(var emp in ViewBag.Employees)
             {
+                var matchingAppointment = Model
+                .Where(st => st.RequestedTime == timeSlot)
+                .Where(st=> st.EmployeeId == emp.Id)
+                .SingleOrDefault();
+
+                if(matchingAppointment == null)
+                {
+ 
+                    <td>
+                        <a asp-action="Create" asp-route-id="@emp.Id" asp-route-time="@timeSlot" asp-controller="Appointment">Add</a> 
+                    </td>
+
+                }
+                else
+                {
                 <td>
-                     <a asp-action="Create" asp-route-id="@emp.Id" asp-route-time="@item" asp-controller="Appointment">Add</a> 
-                    @* <a href="https://localhost:5001/Appointment/Create">Add</a> *@
-                    @*if appointment time for the employee matches up put in name of client in form of 'edit' link*@
+                    <a  asp-action="Edit" asp-route-id="@matchingAppointment.Id" asp-controller="Appointment">@matchingAppointment.Name</a> 
                 </td>
+
+
+                }    
+                
+                
+
+
             }
         </tr>
 }    </tbody>

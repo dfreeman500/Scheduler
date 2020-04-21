@@ -17,11 +17,11 @@ namespace web.Models
         public string LastName { get; set; }
         [Display(Name = "Start Time")]
         [DataType(DataType.Time)]
-        public DateTime StartTime{get;set;}
+        public DateTime StartTime { get; set; }
         [Display(Name = "End Time")]
         [DataType(DataType.Time)]
-        public DateTime EndTime{get;set;}
-        public string FullName 
+        public DateTime EndTime { get; set; }
+        public string FullName
         {
             get
             {
@@ -30,6 +30,9 @@ namespace web.Models
 
         }
         public ICollection<Appointment> Appointments { get; set; } //a collection of a appointments
+
+
+
     }
     // A table of appointments
     public class Appointment : Base // Base Generates Appointment.Id Guid for identifing an Appointment
@@ -40,10 +43,18 @@ namespace web.Models
         public string PhoneNumber { get; set; }
         [Display(Name = "Appointment Notes")]
         public string AppointmentNotes { get; set; }
+
         [Display(Name = "Employee")]
         public Guid EmployeeId { get; set; }
         public Employee Employee { get; set; }
         [Display(Name = "Requested Time")]
+
         public DateTime RequestedTime { get; set; }
+
+
     }
+
+
+
+
 }
