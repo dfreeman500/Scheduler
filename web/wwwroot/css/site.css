@@ -69,3 +69,24 @@ body {
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
 }
+
+
+.outsideWindow {
+  /*background-color:rgba(223, 227, 231, 1);*/
+  background-color:gray;
+  opacity: 0.2;
+}
+.insideWindow {
+  /*background-color:rgba(223, 227, 231, 1);*/
+  text-align: center;
+  opacity: 0.5;
+}
+
+.isappointment
+{
+background-color:rgba(237, 164, 69, 1);
+color: black;
+text-align: center;
+font-weight: 550;
+
+}

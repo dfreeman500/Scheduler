@@ -31,7 +31,7 @@
             @foreach(var emp in ViewBag.Employees)  @*Need to grab list of Employees not model for appointments*@
             {
                 <th>
-                @emp.FullName
+                    <a  asp-action="Edit" asp-route-id="@emp.Id" asp-controller="Employee">@emp.FullName</a>
                 </th>      
             }
             <th></th>
@@ -78,9 +78,10 @@ var times = new List<DateTime> {
 
 
 
-@foreach (var timeSlot in times) {
+@foreach (var timeSlot in times) 
+{
         <tr>
-            <td style="background-color:#dadce0;">
+            <td style="background-color:rgba(136, 226, 157, 1);">
                 @timeSlot.ToString("hh:mm tt")
             </td>
             @foreach(var emp in ViewBag.Employees)
@@ -90,21 +91,42 @@ var times = new List<DateTime> {
                 .Where(st=> st.EmployeeId == emp.Id)
                 .SingleOrDefault();
 
-                if(matchingAppointment == null)
+                bool iswithin=timeSlot.TimeOfDay<emp.StartTime.TimeOfDay;
+                bool iswithin1=timeSlot.TimeOfDay>emp.EndTime.TimeOfDay;
+
+                var appointmentWindowClass="";
+                if((timeSlot.TimeOfDay >= emp.StartTime.TimeOfDay) && (timeSlot.TimeOfDay <= emp.EndTime.TimeOfDay))
                 {
+                    appointmentWindowClass="insideWindow";
+                }
+                else
+                {
+                    appointmentWindowClass="outsideWindow";
  
-                    <td>
+                }
+
+
+                if(matchingAppointment == null) 
+                {
+                    if(appointmentWindowClass=="insideWindow")
+                    {
+                    <td class="@appointmentWindowClass">
+                        
+                    
                         <a asp-action="Create" asp-route-id="@emp.Id" asp-route-time="@timeSlot" asp-controller="Appointment">Add</a> 
                     </td>
+                    }
+                    else 
+                    {
+                        <td class="@appointmentWindowClass"></td>
+                        }
 
                 }
                 else
                 {
-                <td>
-                    <a  asp-action="Edit" asp-route-id="@matchingAppointment.Id" asp-controller="Appointment">@matchingAppointment.Name</a> 
-                </td>
-
-
+                    <td class="isappointment">
+                        <span title="Notes: @matchingAppointment.AppointmentNotes | Phone: @matchingAppointment.PhoneNumber"><a  asp-action="Edit" asp-route-id="@matchingAppointment.Id" asp-controller="Appointment">@matchingAppointment.Name</a> </span>
+                    </td>
                 }    
                 
                 
