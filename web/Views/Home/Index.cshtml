@@ -113,7 +113,7 @@ var times = new List<DateTime> {
                     <td class="@appointmentWindowClass">
                         
                     
-                        <a asp-action="Create" asp-route-id="@emp.Id" asp-route-time="@timeSlot" asp-controller="Appointment">Add</a> 
+                        <span title="@emp.FullName | @timeSlot.ToString("hh:mm tt")"><a asp-action="Create" asp-route-id="@emp.Id" asp-route-time="@timeSlot" asp-controller="Appointment">Add</a> </span> 
                     </td>
                     }
                     else 
@@ -125,7 +125,7 @@ var times = new List<DateTime> {
                 else
                 {
                     <td class="isappointment">
-                        <span title="Notes: @matchingAppointment.AppointmentNotes | Phone: @matchingAppointment.PhoneNumber"><a  asp-action="Edit" asp-route-id="@matchingAppointment.Id" asp-controller="Appointment">@matchingAppointment.Name</a> </span>
+                        <span title="Notes: @matchingAppointment.AppointmentNotes | Phone: @matchingAppointment.PhoneNumber"><a  asp-action="Edit" asp-route-id="@matchingAppointment.Id" asp-controller="Appointment">@matchingAppointment.Name </a> </span>
                     </td>
                 }    
                 

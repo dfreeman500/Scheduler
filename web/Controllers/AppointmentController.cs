@@ -54,6 +54,7 @@ namespace web.Controllers
      // [HttpPost]
               public IActionResult Create(Guid id, DateTime time)
         {
+            ViewBag.ListOfEmployees = _context.Employees.ToList();
             ViewData["EmployeeId"] = new SelectList(_context.Employees, "Id", "FullName" ); 
             return View(new Appointment {RequestedTime=time, EmployeeId = id});
 
