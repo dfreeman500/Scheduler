@@ -14,125 +14,131 @@
     @*<p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>*@
 </div>
 
-<br/>
- @{
-    var calendarDate = DateTime.Today;
-    }
-<h2>  @calendarDate.ToString("D")  </h2>                        
-<br/>
 
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Time 
-            </th>
-            @foreach(var emp in ViewBag.Employees)  @*Need to grab list of Employees not model for appointments*@
-            {
-                <th>
-                    <a  asp-action="Edit" asp-route-id="@emp.Id" asp-controller="Employee">@emp.FullName</a>
-                </th>      
-            }
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-
-
-
-
-@{
-    //List<string> Times = new List<string>(); 
-//        string[] times = { "12 am", "1 am", "2 am", "3 am", "4 am", "5 am", "6 am", "7 am", "8 am", "9 am", "10 am", "11 am", "12 pm", "1 pm", "2 pm", "3 pm", "4 pm", "5 pm", "6 pm", "7 pm", "8 pm", "9 pm", "10 pm", "11 pm" };    
-
-var today = DateTime.Now;
-var times = new List<DateTime> {
-    new DateTime(today.Year,today.Month,today.Day, 0, 0, 0),
-    new DateTime(today.Year,today.Month,today.Day, 1, 0, 0), 
-    new DateTime(today.Year,today.Month,today.Day, 2, 0, 0), 
-    new DateTime(today.Year,today.Month,today.Day, 3, 0, 0), 
-    new DateTime(today.Year,today.Month,today.Day, 4, 0, 0), 
-    new DateTime(today.Year,today.Month,today.Day, 5, 0, 0), 
-    new DateTime(today.Year,today.Month,today.Day, 6, 0, 0), 
-    new DateTime(today.Year,today.Month,today.Day, 7, 0, 0), 
-    new DateTime(today.Year,today.Month,today.Day, 8, 0, 0), 
-    new DateTime(today.Year,today.Month,today.Day, 9, 0, 0), 
-    new DateTime(today.Year,today.Month,today.Day, 10, 0, 0), 
-    new DateTime(today.Year,today.Month,today.Day, 11, 0, 0), 
-    new DateTime(today.Year,today.Month,today.Day, 12, 0, 0), 
-    new DateTime(today.Year,today.Month,today.Day, 13, 0, 0), 
-    new DateTime(today.Year,today.Month,today.Day, 14, 0, 0), 
-    new DateTime(today.Year,today.Month,today.Day, 15, 0, 0), 
-    new DateTime(today.Year,today.Month,today.Day, 16, 0, 0), 
-    new DateTime(today.Year,today.Month,today.Day, 17, 0, 0), 
-    new DateTime(today.Year,today.Month,today.Day, 18, 0, 0), 
-    new DateTime(today.Year,today.Month,today.Day, 19, 0, 0), 
-    new DateTime(today.Year,today.Month,today.Day, 20, 0, 0), 
-    new DateTime(today.Year,today.Month,today.Day, 21, 0, 0), 
-    new DateTime(today.Year,today.Month,today.Day, 22, 0, 0), 
-    new DateTime(today.Year,today.Month,today.Day, 23, 0, 0), 
-    };
-}
-
-
-
-
-@foreach (var timeSlot in times) 
+@for (int i = 0; i < 10; i++)
 {
-        <tr>
-            <td style="background-color:rgba(136, 226, 157, 1);">
-                @timeSlot.ToString("hh:mm tt")
-            </td>
-            @foreach(var emp in ViewBag.Employees)
-            {
-                var matchingAppointment = Model
-                .Where(st => st.RequestedTime == timeSlot)
-                .Where(st=> st.EmployeeId == emp.Id)
-                .SingleOrDefault();
+    <div >
 
-                bool iswithin=timeSlot.TimeOfDay<emp.StartTime.TimeOfDay;
-                bool iswithin1=timeSlot.TimeOfDay>emp.EndTime.TimeOfDay;
+    <br/>
+    @{
+        var calendarDate = DateTime.Today.AddDays(i);
+        }
+    <h2>  @calendarDate.ToString("D")  </h2>                        
+    <br/>
 
-                var appointmentWindowClass="";
-                if((timeSlot.TimeOfDay >= emp.StartTime.TimeOfDay) && (timeSlot.TimeOfDay <= emp.EndTime.TimeOfDay))
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Time 
+                </th>
+                @foreach(var emp in ViewBag.Employees)  @*Need to grab list of Employees not model for appointments*@
                 {
-                    appointmentWindowClass="insideWindow";
+                    <th>
+                        <span title="Edit information for: @emp.FullName"><a  asp-action="Edit" asp-route-id="@emp.Id" asp-controller="Employee">@emp.FullName</a> </span>
+                    </th>      
                 }
-                else
-                {
-                    appointmentWindowClass="outsideWindow";
- 
-                }
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
 
 
-                if(matchingAppointment == null) 
+
+
+    @{
+        //List<string> Times = new List<string>(); 
+    //        string[] times = { "12 am", "1 am", "2 am", "3 am", "4 am", "5 am", "6 am", "7 am", "8 am", "9 am", "10 am", "11 am", "12 pm", "1 pm", "2 pm", "3 pm", "4 pm", "5 pm", "6 pm", "7 pm", "8 pm", "9 pm", "10 pm", "11 pm" };    
+
+    var today = DateTime.Now;
+    var timeSlots = new List<DateTime> {
+        new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 0, 0, 0),
+        new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 1, 0, 0), 
+        new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 2, 0, 0), 
+        new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 3, 0, 0), 
+        new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 4, 0, 0), 
+        new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 5, 0, 0), 
+        new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 6, 0, 0), 
+        new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 7, 0, 0), 
+        new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 8, 0, 0), 
+        new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 9, 0, 0), 
+        new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 10, 0, 0), 
+        new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 11, 0, 0), 
+        new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 12, 0, 0), 
+        new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 13, 0, 0), 
+        new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 14, 0, 0), 
+        new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 15, 0, 0), 
+        new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 16, 0, 0), 
+        new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 17, 0, 0), 
+        new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 18, 0, 0), 
+        new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 19, 0, 0), 
+        new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 20, 0, 0), 
+        new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 21, 0, 0), 
+        new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 22, 0, 0), 
+        new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 23, 0, 0), 
+        };
+    }
+
+
+
+
+
+    @foreach (var timeSlot in timeSlots) 
+    {
+            <tr>
+                <td style="background-color:rgba(136, 226, 157, 1);">
+                    @timeSlot.ToString("hh:mm tt")
+                </td>
+                @foreach(var emp in ViewBag.Employees)
                 {
-                    if(appointmentWindowClass=="insideWindow")
+                    var matchingAppointment = Model
+                    .Where(st => st.RequestedTime == timeSlot)
+                    .Where(st=> st.EmployeeId == emp.Id)
+                    .SingleOrDefault();
+
+
+                    var appointmentWindowClass="";
+                    if((timeSlot.TimeOfDay >= emp.StartTime.TimeOfDay) && (timeSlot.TimeOfDay <= emp.EndTime.TimeOfDay))
                     {
-                    <td class="@appointmentWindowClass">
-                        
-                    
-                        <span title="@emp.FullName | @timeSlot.ToString("hh:mm tt")"><a asp-action="Create" asp-route-id="@emp.Id" asp-route-time="@timeSlot" asp-controller="Appointment">Add</a> </span> 
-                    </td>
+                        appointmentWindowClass="insideWindow";
                     }
-                    else 
+                    else
                     {
-                        <td class="@appointmentWindowClass"></td>
+                        appointmentWindowClass="outsideWindow";
+    
+                    }
+
+
+                    if(matchingAppointment == null) 
+                    {
+                        if(appointmentWindowClass=="insideWindow")
+                        {
+                        <td class="@appointmentWindowClass">
+                            
+                        
+                            <span title="Add @timeSlot appointment for @emp.FullName"><a asp-action="Create" asp-route-id="@emp.Id" asp-route-time="@timeSlot" asp-controller="Appointment">Add</a> </span> 
+                        </td>
                         }
+                        else 
+                        {
+                            <td class="@appointmentWindowClass"></td>
+                            }
+
+                    }
+                    else
+                    {
+                        <td class="isappointment">
+                            <span title="Notes: @matchingAppointment.AppointmentNotes | Phone: @matchingAppointment.PhoneNumber"><a  asp-action="Edit" asp-route-id="@matchingAppointment.Id" asp-controller="Appointment">@matchingAppointment.Name </a> </span>
+                        </td>
+                    }    
+                    
+                    
+
 
                 }
-                else
-                {
-                    <td class="isappointment">
-                        <span title="Notes: @matchingAppointment.AppointmentNotes | Phone: @matchingAppointment.PhoneNumber"><a  asp-action="Edit" asp-route-id="@matchingAppointment.Id" asp-controller="Appointment">@matchingAppointment.Name </a> </span>
-                    </td>
-                }    
-                
-                
-
-
-            }
-        </tr>
-}    </tbody>
-</table>
+            </tr>
+    }    </tbody>
+    </table>
+    </div>
+}
