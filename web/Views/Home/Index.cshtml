@@ -14,12 +14,12 @@
     @*<p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>*@
 </div>
 
-
+<h2>Today is:</h2>
+<div class="outerLoopForTables">
 @for (int i = 0; i < 10; i++)
 {
-    <div >
+    <div class="loopOfTables">
 
-    <br/>
     @{
         var calendarDate = DateTime.Today.AddDays(i);
         }
@@ -27,7 +27,7 @@
     <br/>
 
 
-    <table class="table">
+    <table class="table" >
         <thead>
             <tr>
                 <th>
@@ -140,5 +140,7 @@
             </tr>
     }    </tbody>
     </table>
+    <br/>
     </div>
 }
+</div>
