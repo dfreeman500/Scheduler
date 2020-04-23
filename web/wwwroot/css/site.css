@@ -102,9 +102,17 @@ font-weight: 550;
 .container{
   max-width: 95%;
 }
-  .loopOfTables{
-    flex: 1
-    }
+.loopOfTables{
+  flex: 1;
+  max-width: 50%;
+  padding: 0px;
+  border: 1px solid darkgray;
+  margin: 5px;
+  box-shadow: 3px 2px darkgray;
+}
+
+  
+  
 
   
 
