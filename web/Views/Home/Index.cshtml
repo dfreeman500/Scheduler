@@ -6,18 +6,16 @@
     
 
 <div class="text-center">
-    <h1 class="display-4">Welcome To the Scheduler</h1>
-    <p></p>
-    <h4> The greatest scheduler on earth...</h4> 
+    <h3 >Welcome To the Scheduler</h3>
+    <h5> The greatest scheduler on earth...</h5> 
     <h6 style="color:red;">Current at-a-glance version only works on the hour, add sorting to appointment list and maybe employee list</h6>
-    <p></p>
 
     @*<p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>*@
 </div>
 
-<h2>Today is:</h2>
+<h5>Today is:</h5>
 <div class="outerLoopForTables">
-@for (int i = 0; i < 14; i++)
+@for (int i = 0; i < 30; i++)
 {
     <div class="loopOfTables">
 
@@ -25,9 +23,9 @@
         var calendarDate = DateTime.Today.AddDays(i);
         }
     <h2>  @calendarDate.ToString("D")  </h2>                        
-    <br/>
+    
 
-
+    <div>
     <table class="table" >
         <thead>
             <tr>
@@ -115,7 +113,7 @@
     @foreach (var timeSlot in newTimeSlots) 
     {
             <tr>
-                <td style="background-color:rgba(136, 226, 157, 1);">
+                <td class="timeColumn">
                     @timeSlot.ToString("hh:mm tt")
                 </td>
                 @foreach(var emp in ViewBag.Employees)
@@ -123,7 +121,7 @@
                     var matchingAppointment = Model
                     .Where(st => st.RequestedTime == timeSlot)
                     .Where(st=> st.EmployeeId == emp.Id)
-                    .SingleOrDefault();
+                    .FirstOrDefault();
 
 
                     var appointmentWindowClass="";
@@ -168,7 +166,7 @@
             </tr>
     }    </tbody>
     </table>
-    <br/>
+    </div>
     </div>
 }
 </div>
