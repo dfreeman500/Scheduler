@@ -4,14 +4,32 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+@*<h1>Index</h1>*@
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Create New Appointment</a>
 </p>
+
+    @using(Html.BeginForm("Index", "Appointment", FormMethod.Get))
+    {
+        <b>Search By:</b>
+        @Html.RadioButton("searchBy", "Name",true) <text> Name </text>
+        @Html.RadioButton("searchBy", "Phone Number") <text> Phone </text>
+        @Html.RadioButton("searchBy", "Appointment Notes") <text> Appointment Notes </text>
+        @Html.RadioButton("searchBy", "Employee") <text> Employee </text>
+        @Html.RadioButton("searchBy", "RequestedTime") <text> Requested Time </text><br />
+        <h6> </h6>
+        @Html.TextBox("search") <input type="submit" value="search" /> <a asp-action="Index" asp-controller="Appointment">Clear Search</a>
+        <div style="color:red;"><text> @ViewBag.searchResultMessage </text> </div>  
+        
+   }
+
+
 <table class="table">
     <thead>
         <tr>
+            <th>
+            </th> @*adds column for enumeration*@
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
@@ -31,32 +49,50 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PhoneNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AppointmentNotes)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Employee.FullName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RequestedTime)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+
+        @if (Model.Count() == 0)
+        {
+            <tr>
+                <td colspan="7">
+                    No records match search criteria
+                </td>
+            </tr>
+        }
+        else
+        {
+            var lineTracker = 1;
+            @foreach (var item in Model) {
+                    <tr>
+                                <td>
+                                    @lineTracker.
+                                </td>
+                                @{lineTracker++;}
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.AppointmentNotes)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Employee.FullName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.RequestedTime)
+                                </td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                </td>
+                    </tr>
+            }
+        }
     </tbody>
-</table>
+    
+    </table>
 
 
 

@@ -20,10 +20,38 @@ namespace web.Controllers
         }
 
         // GET: Appointment
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchBy, string search)
         {
-            var context = _context.Appointments.Include(a => a.Employee);
-            return View(await context.ToListAsync());
+            // var context = _context.Appointments.Include(a => a.Employee);        
+            ViewBag.searchResultMessage = "Showing search results for '" + search + "' in the field: '" + searchBy +"'";
+            if (searchBy == "Name")
+            {
+                // context = _context.Appointments.Include(a => a.Employee); 
+                
+                return View(await _context.Appointments.Include(a=> a.Employee).Where(x => x.Name.Contains(search) || search == null).ToListAsync());
+            }
+            if (searchBy == "Phone Number")
+            {
+                return View(await _context.Appointments.Include(a=> a.Employee).Where(x => x.PhoneNumber.Contains(search) || search == null).ToListAsync());
+            }
+            if (searchBy == "Appointment Notes")
+            {
+                return View(await _context.Appointments.Include(a=> a.Employee).Where(x => x.AppointmentNotes.Contains(search) || search == null).ToListAsync());
+            }
+            // if (searchBy == "Employee")
+            // {
+            //     return View(await _context.Appointments.Include(a=> a.Employee).Where(x => x.Employee.Contains(search) || search == null).ToListAsync());
+            // }
+            // if (searchBy == "RequestedTime")
+            // {
+            //     return View(await _context.Appointments.Where(x => x.RequestedTime == search || search == null).ToListAsync());
+            // }
+            else
+            {
+                ViewBag.searchResultMessage ="";
+                var context = _context.Appointments.Include(a => a.Employee);
+                return View(await context.ToListAsync());
+            }
         }
 
         // GET: Appointment/Details/5
@@ -142,10 +170,10 @@ namespace web.Controllers
         public async Task<IActionResult> Edit(Guid id, [Bind("Name,PhoneNumber,AppointmentNotes,EmployeeId,RequestedTime,Id")] Appointment appointment)
         {
             //Searches for other appointments with the same time and employee (ie.for double booking events)
-            var isDoubleBooked = _context.Appointments
-                .Where(st => st.RequestedTime == appointment.RequestedTime)
-                .Where(st=> st.EmployeeId == appointment.EmployeeId)
-                .SingleOrDefault();
+            // var isDoubleBooked = _context.Appointments
+            //     .Where(st => st.RequestedTime == appointment.RequestedTime)
+            //     .Where(st=> st.EmployeeId == appointment.EmployeeId)
+            //     .SingleOrDefault();
 
 //             An unhandled exception occurred while processing the request.
 //             InvalidOperationException: The instance of entity type 'Appointment' cannot be tracked because another instance with the same key value for {'Id'} is already being tracked. When attaching existing entities, ensure that only one entity instance with a given key value is attached. Consider using 'DbContextOptionsBuilder.EnableSensitiveDataLogging' to see the conflicting key values.
@@ -156,10 +184,10 @@ namespace web.Controllers
 //                 .SingleOrDefault();
 //              if(isDoubleBooked != null && entryBeforeEdit == null ) //if records are found, then requested time would double book the employee - raise an error
 
-            if(isDoubleBooked != null) //if records are found, then requested time would double book the employee - raise an error
-            {
-                ModelState.AddModelError("RequestedTime", "The requested appointment overlaps with another appointment for this employee");
-            }
+            // if(isDoubleBooked != null) //if records are found, then requested time would double book the employee - raise an error
+            // {
+            //     ModelState.AddModelError("RequestedTime", "The requested appointment overlaps with another appointment for this employee");
+            // }
 
 
             if (id != appointment.Id)
