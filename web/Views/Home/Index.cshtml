@@ -4,10 +4,10 @@
 
 @model IEnumerable<web.Models.Appointment>
     
-
+@{var numberOfDays = 30;}  @*sets the number of days that the at-a-glance calendar will display*@
 <div class="text-center">
     <h3 >Welcome To the Scheduler</h3>
-    <h5> The greatest scheduler on earth...</h5> 
+    <h5> The greatest scheduler on earth. Currently showing @numberOfDays days at-a-glance.</h5> 
     <h6 style="color:red;">Current at-a-glance version only works on the hour, add sorting to appointment list and maybe employee list</h6>
 
     @*<p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>*@
@@ -15,7 +15,7 @@
 
 <h5>Today is:</h5>
 <div class="outerLoopForTables">
-@for (int i = 0; i < 30; i++)
+@for (int i = 0; i < @numberOfDays; i++)
 {
     <div class="loopOfTables">
 
