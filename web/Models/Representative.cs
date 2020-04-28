@@ -38,6 +38,7 @@ namespace web.Models
     public class Appointment : Base // Base Generates Appointment.Id Guid for identifing an Appointment
     {
         // Single use customer
+        [Required]
         public string Name { get; set; }
         [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }
