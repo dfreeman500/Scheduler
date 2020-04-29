@@ -17,7 +17,7 @@
         @Html.RadioButton("searchBy", "Phone Number") <text> Phone </text>
         @Html.RadioButton("searchBy", "Appointment Notes") <text> Appointment Notes </text>
         @Html.RadioButton("searchBy", "Employee") <text> Employee </text>
-        @Html.RadioButton("searchBy", "RequestedTime") <text> Requested Time </text><br />
+        @Html.RadioButton("searchBy", "Requested Time") <text> Requested Time </text><br />
         <h6> </h6>
         @Html.TextBox("search") <input type="submit" value="search" /> <a asp-action="Index" asp-controller="Appointment">Clear Search</a>
         <div style="color:red;"><text> Showing @Model.Count() Entries @ViewBag.searchResultMessage </text> </div>  
@@ -31,19 +31,19 @@
             <th>
             </th> @*adds column for enumeration*@
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+            @Html.ActionLink("Name", "Index", new { sortOrder = ViewBag.NameSort })
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PhoneNumber)
+                @Html.ActionLink("Phone Number", "Index", new {sortOrder = ViewBag.PhoneNumberSort})
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AppointmentNotes)
+                @Html.ActionLink("Appointment Notes", "Index", new {sortOrder = ViewBag.AppointmentNotesSort})
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Employee)
+                @Html.ActionLink("Employee", "Index", new {sortOrder = ViewBag.EmployeeSort})
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.RequestedTime)
+                @Html.ActionLink("Requested Time", "Index", new {sortOrder = ViewBag.RequestedTimeSort})
             </th>
             <th></th>
         </tr>
