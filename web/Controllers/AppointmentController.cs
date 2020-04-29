@@ -23,7 +23,7 @@ namespace web.Controllers
         public async Task<IActionResult> Index(string searchBy, string search)
         {
             // var context = _context.Appointments.Include(a => a.Employee);        
-            ViewBag.searchResultMessage = "Showing search results for '" + search + "' in the field: '" + searchBy +"'";
+            ViewBag.searchResultMessage = "for '" + search + "' in the field: '" + searchBy +"'";
             if (searchBy == "Name")
             {
                 // context = _context.Appointments.Include(a => a.Employee); 
@@ -48,7 +48,7 @@ namespace web.Controllers
             // }
             else
             {
-                ViewBag.searchResultMessage ="";
+                ViewBag.searchResultMessage =" - No search filters currently applied";
                 var context = _context.Appointments.Include(a => a.Employee);
                 return View(await context.ToListAsync());
             }

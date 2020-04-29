@@ -10,7 +10,7 @@
     <a asp-action="Create">Create New Appointment</a>
 </p>
 
-    @using(Html.BeginForm("Index", "Appointment", FormMethod.Get))
+    @using(Html.BeginForm("Index", "Appointment", FormMethod.Get))  @* Search box*@
     {
         <b>Search By:</b>
         @Html.RadioButton("searchBy", "Name",true) <text> Name </text>
@@ -20,7 +20,7 @@
         @Html.RadioButton("searchBy", "RequestedTime") <text> Requested Time </text><br />
         <h6> </h6>
         @Html.TextBox("search") <input type="submit" value="search" /> <a asp-action="Index" asp-controller="Appointment">Clear Search</a>
-        <div style="color:red;"><text> @ViewBag.searchResultMessage </text> </div>  
+        <div style="color:red;"><text> Showing @Model.Count() Entries @ViewBag.searchResultMessage </text> </div>  
         
    }
 

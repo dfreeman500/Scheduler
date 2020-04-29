@@ -6,7 +6,7 @@
     
 @{var numberOfDays = 30;}  @*sets the number of days that the at-a-glance calendar will display*@
 <div class="text-center">
-    <h3 >Welcome To the Scheduler</h3>
+    <h3 >Welcome To the Event Scheduler</h3>
     <h5> The greatest scheduler on earth. Currently showing @numberOfDays days at-a-glance.</h5> 
     <h6 style="color:red;">Current at-a-glance version only works on the hour, add sorting to appointment list and maybe employee list</h6>
 
@@ -143,7 +143,8 @@
                         <td class="@appointmentWindowClass">
                             
                         
-                            <span title="Add @timeSlot.ToString("MM/dd/yyyy hh:mm tt") appointment for @emp.FullName"><a asp-action="Create" asp-route-id="@emp.Id" asp-route-time="@timeSlot" asp-controller="Appointment">Add</a> </span> 
+                            <span title="Add @timeSlot.ToString("MM/dd/yyyy h:mm tt")
+                                         appointment with @emp.FullName"><a asp-action="Create" asp-route-id="@emp.Id" asp-route-time="@timeSlot" asp-controller="Appointment">Add</a> </span> 
                         </td>
                         }
                         else 
@@ -155,7 +156,11 @@
                     else
                     {
                         <td class="isappointment">
-                            <span title="Notes: @matchingAppointment.AppointmentNotes | Phone: @matchingAppointment.PhoneNumber"><a  asp-action="Edit" asp-route-id="@matchingAppointment.Id" asp-controller="Appointment">@matchingAppointment.Name </a> </span>
+                            <span title="Name: @matchingAppointment.Name
+                                         Appointment: @matchingAppointment.RequestedTime.ToString("MM/dd/yyyy h:mm tt")
+                                         With: @emp.FullName
+                                         Notes: @matchingAppointment.AppointmentNotes 
+                                         Phone: @matchingAppointment.PhoneNumber"><a  asp-action="Edit" asp-route-id="@matchingAppointment.Id" asp-controller="Appointment">@matchingAppointment.Name </a> </span>
                         </td>
                     }    
                     
