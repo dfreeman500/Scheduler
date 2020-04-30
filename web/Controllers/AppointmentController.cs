@@ -22,66 +22,66 @@ namespace web.Controllers
         // GET: Appointment
         public async Task<IActionResult> Index(string searchBy, string search, string sortOrder)
         {
-            ViewBag.RequestedTimeSort = String.IsNullOrEmpty(sortOrder) ? "RequestedTime_desc" : "";
-            ViewBag.NameSort = sortOrder == "Name" ? "Name_desc" : "Name";
-            ViewBag.EmployeeSort = sortOrder == "Employee" ? "Employee_desc" : "Employee";
-            ViewBag.AppointmentNotesSort = sortOrder == "AppointmentNotes" ? "AppointmentNotes_desc" : "AppointmentNotes";
-            ViewBag.PhoneNumberSort = sortOrder == "PhoneNumber" ? "PhoneNumber_desc" : "PhoneNumber";
+            
+            
+
+            
+                ViewBag.RequestedTimeSort = String.IsNullOrEmpty(sortOrder) ? "RequestedTime_desc" : "";
+                ViewBag.NameSort = sortOrder == "Name" ? "Name_desc" : "Name";
+                ViewBag.EmployeeSort = sortOrder == "Employee" ? "Employee_desc" : "Employee";
+                ViewBag.AppointmentNotesSort = sortOrder == "AppointmentNotes" ? "AppointmentNotes_desc" : "AppointmentNotes";
+                ViewBag.PhoneNumberSort = sortOrder == "PhoneNumber" ? "PhoneNumber_desc" : "PhoneNumber";
 
 
-            var sortedAppointments = from s in _context.Appointments.Include(a => a.Employee) select s;
-            switch (sortOrder)
-            {
-                case "Name_desc":
-                    sortedAppointments = sortedAppointments.OrderByDescending(x => x.Name);
-                    break;
-                case "Name":
-                    sortedAppointments = sortedAppointments.OrderBy(x => x.Name);
-                    break;
-                case "PhoneNumber_desc":
-                    sortedAppointments = sortedAppointments.OrderByDescending(x => x.PhoneNumber);
-                    break;
-                case "PhoneNumber":
-                    sortedAppointments = sortedAppointments.OrderBy(x => x.PhoneNumber);
-                    break;
-                case "AppointmentNotes_desc":
-                    sortedAppointments = sortedAppointments.OrderByDescending(x => x.AppointmentNotes);
-                    break;
-                case "AppointmentNotes":
-                    sortedAppointments = sortedAppointments.OrderBy(x => x.AppointmentNotes);
-                    break;
-                case "Employee_desc":
-                    sortedAppointments = sortedAppointments.OrderByDescending(x => x.Employee);
-                    break;
-                case "Employee":
-                    sortedAppointments = sortedAppointments.OrderBy(x => x.Employee);
-                    break;
-                case "RequestedTime_desc":
-                    sortedAppointments = sortedAppointments.OrderByDescending(x => x.RequestedTime);
-                    break;
-                default:
-                    sortedAppointments = sortedAppointments.OrderBy(x => x.RequestedTime);
-                    break;
-
-            }
-
+                var sortedAppointments = from s in _context.Appointments.Include(a => a.Employee) select s;
+                switch (sortOrder)
+                {
+                    case "Name_desc":
+                        sortedAppointments = sortedAppointments.OrderByDescending(x => x.Name);
+                        break;
+                    case "Name":
+                        sortedAppointments = sortedAppointments.OrderBy(x => x.Name);
+                        break;
+                    case "PhoneNumber_desc":
+                        sortedAppointments = sortedAppointments.OrderByDescending(x => x.PhoneNumber);
+                        break;
+                    case "PhoneNumber":
+                        sortedAppointments = sortedAppointments.OrderBy(x => x.PhoneNumber);
+                        break;
+                    case "AppointmentNotes_desc":
+                        sortedAppointments = sortedAppointments.OrderByDescending(x => x.AppointmentNotes);
+                        break;
+                    case "AppointmentNotes":
+                        sortedAppointments = sortedAppointments.OrderBy(x => x.AppointmentNotes);
+                        break;
+                    case "Employee_desc":
+                        sortedAppointments = sortedAppointments.OrderByDescending(x => x.Employee);
+                        break;
+                    case "Employee":
+                        sortedAppointments = sortedAppointments.OrderBy(x => x.Employee);
+                        break;
+                    case "RequestedTime_desc":
+                        sortedAppointments = sortedAppointments.OrderByDescending(x => x.RequestedTime);
+                        break;
+                    default:
+                        sortedAppointments = sortedAppointments.OrderBy(x => x.RequestedTime);
+                        break;
+                }
 
 
 
             ViewBag.searchResultMessage = "for '" + search + "' in the field: '" + searchBy + "'";
             if (searchBy == "Name")
             {
-                // context = _context.Appointments.Include(a => a.Employee); 
-
-                return View(await _context.Appointments.Include(a => a.Employee).Where(x => x.Name.Contains(search) || search == null).ToListAsync());
+                var newAppointments = sortedAppointments.Include(a => a.Employee).Where(x => x.Name.Contains(search) || search == null).ToListAsync();
             }
             if (searchBy == "Phone Number")
             {
-                return View(await _context.Appointments.Include(a => a.Employee).Where(x => x.PhoneNumber.Contains(search) || search == null).ToListAsync());
+                return View(await sortedAppointments.Include(a => a.Employee).Where(x => x.PhoneNumber.Contains(search) || search == null).ToListAsync());
             }
             if (searchBy == "Appointment Notes")
             {
-                return View(await _context.Appointments.Include(a => a.Employee).Where(x => x.AppointmentNotes.Contains(search) || search == null).ToListAsync());
+                return View(await sortedAppointments.Include(a => a.Employee).Where(x => x.AppointmentNotes.Contains(search) || search == null).ToListAsync());
             }
             // if (searchBy == "Employee")
             // {
@@ -95,8 +95,12 @@ namespace web.Controllers
             {
                 ViewBag.searchResultMessage = " - No search filters currently applied";
                 var context = _context.Appointments.Include(a => a.Employee);
-                return View(await sortedAppointments.ToListAsync());
             }
+
+
+            return View(await sortedAppointments.ToListAsync());
+
+
         }
 
         // GET: Appointment/Details/5

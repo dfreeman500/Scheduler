@@ -4,7 +4,8 @@
 
 @model IEnumerable<web.Models.Appointment>
     
-@{var numberOfDays = 30;}  @*sets the number of days that the at-a-glance calendar will display*@
+@{var numberOfDays = 14;}  @*sets the number of days that the at-a-glance calendar will display*@
+
 <div class="text-center">
     <h3 >Welcome To the Event Scheduler</h3>
     <h5> The greatest scheduler on earth. Currently showing @numberOfDays days at-a-glance.</h5> 
@@ -171,6 +172,7 @@
             </tr>
     }    </tbody>
     </table>
+    <br/>
     </div>
     </div>
 }

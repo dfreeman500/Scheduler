@@ -92,17 +92,17 @@ font-weight: 550;
 
 .outerLoopForTables  {
   display: grid;
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  float:left;
+
   max-width: 100%;
 }
 
 .container{
   max-width: 95%;
 }
-
+  /*display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  float:left; */
 
 
 .loopOfTables{
