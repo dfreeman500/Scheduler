@@ -31,7 +31,7 @@ This is an event scheduler. A suggested use would be at a conference that lasted
 
 * Employee/Index Page
     * Allows employees to be created, read, updated, and deleted
-    ![Employee Index Page](images\Employee_Home.png)
+![Employee Index Page](images\Employee_Home.png)
 
 * Apointments/Index Page
     * Allows appointments to be created, read, updated, and deleted.
@@ -43,9 +43,9 @@ This is an event scheduler. A suggested use would be at a conference that lasted
     * Upon attempted creation of an appointment that overlaps with another appointment on that same employee -- an error message will display and indicate which employees have an opening at that time slot. 
     * Upon attempted creation of an appointment that is scheduled outside of employee's work window -- an error message will display showing the work window of that employee. 
     * However, after creation, the user can purposely doublebook an appointment or set an appointment outside of the employee's work window by editing the appointment. 
-    ![Appointments Page](images\Appointments_Page.png)
-    ![Appointment Search Function](images/Appointment_Search.png)
-    ![Appointment Error/validation for double booking](images\Double_Booked_Error.png)
+![Appointments Page](images\Appointments_Page.png)
+![Appointment Search Function](images/Appointment_Search.png)
+![Appointment Error/validation for double booking](images\Double_Booked_Error.png)
 
 
 
