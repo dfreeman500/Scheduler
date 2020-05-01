@@ -50,4 +50,4 @@ This is an event scheduler. A suggested use would be at a conference that lasted
 - [x] Creating CRUD Controllers
 - [x]  Creating CRUD Views
 
-[](images/Appointment_Search.png)
+![Appointment Search Function](images/Appointment_Search.png)
