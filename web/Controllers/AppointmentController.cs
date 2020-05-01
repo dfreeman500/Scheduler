@@ -73,7 +73,7 @@ namespace web.Controllers
             ViewBag.searchResultMessage = "for '" + search + "' in the field: '" + searchBy + "'";
             if (searchBy == "Name")
             {
-                var newAppointments = sortedAppointments.Include(a => a.Employee).Where(x => x.Name.Contains(search) || search == null).ToListAsync();
+                return View(await sortedAppointments.Include(a => a.Employee).Where(x => x.Name.Contains(search) || search == null).ToListAsync());
             }
             if (searchBy == "Phone Number")
             {
