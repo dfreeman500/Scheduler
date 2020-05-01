@@ -45,11 +45,11 @@ This is an event scheduler. A suggested use would be at a conference that lasted
     * In nonfiltered/nonsearched view, the appointments are sorted in chronological order by default.
     * In nonfiltered/nonsearched views, sorting by some fields (descending/ascending) is allowed.
     * Search/filter function is available for some fields.
-    * A message under the search box will indicate the number of entries displayed, if the filter/search function is being used, the search entry, and the field that is being searched.
-    * If no records are found with a search a message will also display in the table.
+    * A message under the search box will indicate 1.) the number of entries displayed, 2.) whether the filter/search function is being used, 3.) the search entry, 4.) and the field that is being searched.
+    * If no records are found with a search, a message will also display in the table.
     * Upon attempted creation of an appointment that overlaps with another appointment on that same employee -- an error message will display and indicate which employees have an opening at that time slot. 
     * Upon attempted creation of an appointment that is scheduled outside of employee's work window -- an error message will display showing the work window of that employee. 
-    * However, after creation, the user can purposely doublebook an appointment or set an appointment outside of the employee's work window by editing the appointment. 
+    * However, after appointment creation in a 'valid' time slot, the user can purposely doublebook an appointment or set an appointment outside of the employee's work window by editing the appointment. 
 ***
 --> View of the appointments Page
 ![Appointments Page](images/Appointments_Page.png)
