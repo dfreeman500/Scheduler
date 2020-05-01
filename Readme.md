@@ -26,19 +26,20 @@ This is an event scheduler. A suggested use would be at a conference that lasted
     * Only appointment 'Add' links within the employee work window will be shown. Clicking the 'Add' link will url route to the appropriate time slot and employee for appointment creation. Hovering over the 'Add' link shows the Date, Time, and employee for the potential appointment.
     * On the hour appointments will show for the employee. Hovering over the appointment link shows name, phone number, appointment notes, Employee name, and appointment date/time. Clicking an appointment link routes the user to the appointment edit function. 
     * Clicking on an employee link allows for editing of the information for that employee. Changes in the employees work window will change the visual view of the schedule for that day. 
-
+***
 --> Home Index, At a glance view showing hover information for an established appointment
 ![Home At-a-glance view](images/Home_View_Hover.png)    
-
+***
 --> Home Index, At a glace view showing hover for adding an appointment
 ![Home At-a-glance view](images/Home_View_Hover_Add.png)  
+***
 
 * Employee/Index Page
     * Allows employees to be created, read, updated, and deleted
-
+***
 --> View of the Employee Index Page
 ![Employee Index Page](images/Employee_Home.png)
-
+***
 * Apointments/Index Page
     * Allows appointments to be created, read, updated, and deleted.
     * In nonfiltered/nonsearched view, the appointments are sorted in chronological order by default.
@@ -49,19 +50,21 @@ This is an event scheduler. A suggested use would be at a conference that lasted
     * Upon attempted creation of an appointment that overlaps with another appointment on that same employee -- an error message will display and indicate which employees have an opening at that time slot. 
     * Upon attempted creation of an appointment that is scheduled outside of employee's work window -- an error message will display showing the work window of that employee. 
     * However, after creation, the user can purposely doublebook an appointment or set an appointment outside of the employee's work window by editing the appointment. 
-
+***
 --> View of the appointments Page
 ![Appointments Page](images/Appointments_Page.png)
-
+***
 --> Appointment Search Function
 ![Appointment Search Function](images/Appointment_Search.png)
-
+***
 --> Outside work window error/validation
 ![Appointment Error/validation for double booking](images/Double_Booked_Error.png)
+***
 
+***
 -> Outside work window error/validation
 ![Outside work window Error/validation](images/Outside_Work_Window_Error.png)
-
+***
 
 
 
