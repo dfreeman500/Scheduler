@@ -22,16 +22,22 @@ namespace web
                     {
                         FirstName = "Dr.",
                         LastName = "Strange",
+                        StartTime = new DateTime(2020, 5, 2, 09, 0, 0),
+                        EndTime = new DateTime(2020, 5, 2, 17, 0, 0),
                     },
                     new Employee
                     {
                         FirstName = "Dr. ",
                         LastName = "Banner",
+                        StartTime = new DateTime(2020, 5, 2, 08, 0, 0),
+                        EndTime = new DateTime(2020, 5, 2, 16, 0, 0),
                     },
                     new Employee
                     {
                         FirstName = "Dr.",
                         LastName = "Dre",
+                        StartTime = new DateTime(2020, 5, 2, 10, 0, 0),
+                        EndTime = new DateTime(2020, 5, 2, 19, 0, 0),
                     },
 
                 };
