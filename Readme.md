@@ -30,7 +30,7 @@ This is an event scheduler. A suggested use would be at a conference that lasted
 --> Home Index, At a glance view showing hover information for an established appointment
 ![Home At-a-glance view](images/Home_View_Hover.png)    
 ***
---> Home Index, At a glace view showing hover for adding an appointment
+--> Home Index, At a glance view showing hover for adding an appointment
 ![Home At-a-glance view](images/Home_View_Hover_Add.png)  
 ***
 

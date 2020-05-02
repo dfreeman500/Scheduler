@@ -9,7 +9,7 @@ namespace web.Models
     }
     // A table of employees. 
     // Each employee will have multiple appointments
-    public class Employee : Base // Base Generates Employee.Id Guid for identifing an Employee
+    public class Employee : Base 
     {
         [Display(Name = "First Name")] //Display attributes so it will show correctly in view/webpage
         public string FirstName { get; set; }
@@ -29,7 +29,7 @@ namespace web.Models
             }
 
         }
-        public ICollection<Appointment> Appointments { get; set; } //a collection of a appointments
+        public ICollection<Appointment> Appointments { get; set; } 
 
 
 
@@ -37,7 +37,7 @@ namespace web.Models
     // A table of appointments
     public class Appointment : Base // Base Generates Appointment.Id Guid for identifing an Appointment
     {
-        // Single use customer
+
         [Required]
         public string Name { get; set; }
         [Display(Name = "Phone Number")]

@@ -22,16 +22,12 @@ namespace web.Controllers
         // GET: Appointment
         public async Task<IActionResult> Index(string searchBy, string search, string sortOrder)
         {
-            
-            
-
-            
+            //Sorting logic
                 ViewBag.RequestedTimeSort = String.IsNullOrEmpty(sortOrder) ? "RequestedTime_desc" : "";
                 ViewBag.NameSort = sortOrder == "Name" ? "Name_desc" : "Name";
                 ViewBag.EmployeeSort = sortOrder == "Employee" ? "Employee_desc" : "Employee";
                 ViewBag.AppointmentNotesSort = sortOrder == "AppointmentNotes" ? "AppointmentNotes_desc" : "AppointmentNotes";
                 ViewBag.PhoneNumberSort = sortOrder == "PhoneNumber" ? "PhoneNumber_desc" : "PhoneNumber";
-
 
                 var sortedAppointments = from s in _context.Appointments.Include(a => a.Employee) select s;
                 switch (sortOrder)
@@ -67,9 +63,7 @@ namespace web.Controllers
                         sortedAppointments = sortedAppointments.OrderBy(x => x.RequestedTime);
                         break;
                 }
-
-
-
+            //Search Logic
             ViewBag.searchResultMessage = "for '" + search + "' in the field: '" + searchBy + "'";
             if (searchBy == "Name")
             {
@@ -181,7 +175,6 @@ namespace web.Controllers
             {
                 ModelState.AddModelError("RequestedTime", employee.FullName + " is booked during that time slot. Other employees available: " + listOfAllEmployees.Count + " | " + string.Join(", ", listOfAllEmployees));
             }
-
 
             if (ModelState.IsValid)
             {

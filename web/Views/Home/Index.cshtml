@@ -3,14 +3,12 @@
 }
 
 @model IEnumerable<web.Models.Appointment>
-    
-@{var numberOfDays = 14;}  @*sets the number of days that the at-a-glance calendar will display*@
+@*sets the number of days that the at-a-glance calendar will display*@    
+@{var numberOfDays = 14;}  
 
 <div class="text-center">
     <h3 >Welcome To the Event Scheduler</h3>
     <h5> Currently showing @numberOfDays days for at-a-glance scheduling.</h5> 
-
-    @*<p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>*@
 </div>
 
 <h5>Today is:</h5>
@@ -24,7 +22,7 @@
         }
     <h2>  @calendarDate.ToString("D")  </h2>                        
     
-
+@*Displays table of appointments*@
     <div>
     <table class="table" >
         <thead>
@@ -32,7 +30,7 @@
                 <th>
                     Time 
                 </th>
-                @foreach(var emp in ViewBag.Employees)  @*Need to grab list of Employees not model for appointments*@
+                @foreach(var emp in ViewBag.Employees)  
                 {
                     <th>
                         <span title="Edit information for: @emp.FullName"><a  asp-action="Edit" asp-route-id="@emp.Id" asp-controller="Employee">@emp.FullName</a> </span>
@@ -42,14 +40,8 @@
             </tr>
         </thead>
         <tbody>
-
-
-
-
     @{
-        //List<string> Times = new List<string>(); 
-    //        string[] times = { "12 am", "1 am", "2 am", "3 am", "4 am", "5 am", "6 am", "7 am", "8 am", "9 am", "10 am", "11 am", "12 pm", "1 pm", "2 pm", "3 pm", "4 pm", "5 pm", "6 pm", "7 pm", "8 pm", "9 pm", "10 pm", "11 pm" };    
-
+  
     var today = DateTime.Now;
     var timeSlots = new List<DateTime> {
         new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 0, 0, 0),
@@ -79,8 +71,7 @@
         };
     }
 
-    @{
-        
+    @{      
         var tempListOfTodaysAppointments = new List<DateTime> {};
         foreach(var appointment in Model)
         {   
@@ -94,22 +85,20 @@
             tempListOfTodaysAppointments.Add((calendarDate.Date+emp.StartTime.TimeOfDay));
             tempListOfTodaysAppointments.Add(calendarDate.Date+emp.EndTime.TimeOfDay);
         }
-
-        var newTimeSlots = new List<DateTime>(timeSlots); @*Creates a clone so I can update the timeslots*@
+        @*Creates a clone so I can update the timeslots for that particular day*@
+        var newTimeSlots = new List<DateTime>(timeSlots); 
         @foreach(var time in timeSlots)
         {
             if(time<tempListOfTodaysAppointments.Min()||time>tempListOfTodaysAppointments.Max())
                 {
                     newTimeSlots.Remove(time);
-
                 }
         }
-
     }
-    
-    
-
-
+    @*For each time slot find the appointment that is appropriate for the time slot and employee.
+        If there is an appointment, put that link there including mouse over info. If no appointment
+        but there is a opening, add that link
+    *@
     @foreach (var timeSlot in newTimeSlots) 
     {
             <tr>
@@ -123,7 +112,6 @@
                     .Where(st=> st.EmployeeId == emp.Id)
                     .FirstOrDefault();
 
-
                     var appointmentWindowClass="";
                     if((timeSlot.TimeOfDay >= emp.StartTime.TimeOfDay) && (timeSlot.TimeOfDay <= emp.EndTime.TimeOfDay))
                     {
@@ -135,14 +123,11 @@
     
                     }
 
-
                     if(matchingAppointment == null) 
                     {
                         if(appointmentWindowClass=="insideWindow")
                         {
-                        <td class="@appointmentWindowClass">
-                            
-                        
+                        <td class="@appointmentWindowClass">                                                
                             <span title="Add @timeSlot.ToString("MM/dd/yyyy h:mm tt")
                                          appointment with @emp.FullName"><a asp-action="Create" asp-route-id="@emp.Id" asp-route-time="@timeSlot" asp-controller="Appointment">Add</a> </span> 
                         </td>
@@ -151,7 +136,6 @@
                         {
                             <td class="@appointmentWindowClass"></td>
                             }
-
                     }
                     else
                     {
@@ -163,10 +147,6 @@
                                          Phone: @matchingAppointment.PhoneNumber"><a  asp-action="Edit" asp-route-id="@matchingAppointment.Id" asp-controller="Appointment">@matchingAppointment.Name </a> </span>
                         </td>
                     }    
-                    
-                    
-
-
                 }
             </tr>
     }    </tbody>
