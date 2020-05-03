@@ -35,7 +35,7 @@ namespace web
                     new Employee
                     {
                         FirstName = "Dr.",
-                        LastName = "Banner",
+                        LastName = "Manhattan",
                         StartTime = new DateTime(2020, 5, 2, 10, 0, 0),
                         EndTime = new DateTime(2020, 5, 2, 19, 0, 0),
                     },
