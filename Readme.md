@@ -27,8 +27,8 @@ This is an event scheduler. A suggested use would be at a conference that lasted
     * Each day shows only the range of on the hour valid times slots for the employees and the earliest and latest appointments for that day.
     * Appointment Quick Add links within the employee work window will be shown. Clicking the Quick Add link will url route to the on the hour time for that employee for appointment creation. Hovering over the 'Add' link shows the Date, Time, and employee for the potential appointment.
     * For each hour, appointments will be listed for each employee. Hovering over the appointment link shows name, phone number, appointment notes, and appointment date/time. Clicking an appointment link routes the user to the appointment edit function. 
-    * Clicking on an employee link allows for editing of the information for that employee. Changes in the employees work window will change the visual view of the schedule for that day as well any OW coding (explained below). 
     * Double booked apointments and appointments outside of an employee's work window will be coded with DB and OW respectively indicating that status.
+    * Clicking on an employee link allows for editing of the information for that employee. Changes in the employee's work window will change the visual view of the schedule for that day as well any OW coding.
 ***
 --> Home Index, At a glance view showing hover information for an established appointment
 ![Home At-a-glance view](images/Home_View_Hover.png)    
