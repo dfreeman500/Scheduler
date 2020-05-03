@@ -38,5 +38,6 @@
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Delete" asp-controller="Employee" asp-route-id="@Model.Id" > Delete This Employee</a> |
+    <a asp-action="Index">Go to Employee List</a>
 </div>
