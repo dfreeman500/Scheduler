@@ -64,6 +64,7 @@
                     <tr>
                                 <td>
                                     @lineTracker.
+
                                 </td>
                                 @{lineTracker++;}
                                 <td>
@@ -79,7 +80,20 @@
                                     @Html.DisplayFor(modelItem => item.Employee.FullName)
                                 </td>
                                 <td>
+                                    @{
+                                        if((item.RequestedTime.TimeOfDay < item.Employee.StartTime.TimeOfDay) || (item.RequestedTime.TimeOfDay > item.Employee.EndTime.TimeOfDay))
+                                        {
+                                                <a><text style="color:red;">OW</text></a>                                 
+                                        }
+                                        var double_Booked = Model
+                                            .Where(st=> st.RequestedTime==item.RequestedTime)
+                                            .Where(st=> st.EmployeeId == item.EmployeeId);
+                                        if(@double_Booked.Count()>1)
+                                        {
+                                            <a><text style="color:red;">DB</text></a>     
+                                        }
                                     @Html.DisplayFor(modelItem => item.RequestedTime)
+                                     }
                                 </td>
                                 <td>
                                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

@@ -154,26 +154,40 @@ namespace web.Controllers
             var doubleBookings = _context.Appointments
                 .Where(st => st.RequestedTime == appointment.RequestedTime)
                 .Where(st => st.EmployeeId == appointment.EmployeeId)
-                .SingleOrDefault();
+                .FirstOrDefault();
 
             //makes a list of all available employees at the time someone is making an appointment
-            var listOfAllEmployees = _context.Employees.Select(x => x.FullName).ToList();
+            var listOfEmployees = _context.Employees.Select(x => x.FullName).ToList();
 
             //Finds appointments across all employees with overlapping times
             var appointmentsWithOverlappingTimes = _context.Appointments
                 .Where(aw => aw.RequestedTime == appointment.RequestedTime)
                 .ToList();
 
-            //makes it so that only employees with empty time slots during requested time are left in list
+
+
+            //Finds employees where the appointment would be outside of work window
+            var listOfEmployeesOutsideWindow = _context.Employees
+            .Where(x => x.StartTime.TimeOfDay>appointment.RequestedTime.TimeOfDay || x.EndTime.TimeOfDay<appointment.RequestedTime.TimeOfDay)
+            .ToList();    
+            
+
+            //removes employee names from listOfEmployees when the appointment is outside work window
+            foreach(var emp in listOfEmployeesOutsideWindow)
+            {
+                listOfEmployees.Remove(emp.FullName);
+            }    
+
+            //removes employee name from listOfEmployees when that employee has an overlapping time - results in only available employees being shown
             foreach (var emp in appointmentsWithOverlappingTimes)
             {
-                listOfAllEmployees.Remove(emp.Employee.FullName);
+                listOfEmployees.Remove(emp.Employee.FullName);
             }
 
             //raise error if doubleBookings found an entry
             if (doubleBookings != null)
             {
-                ModelState.AddModelError("RequestedTime", employee.FullName + " is booked during that time slot. Other employees available: " + listOfAllEmployees.Count + " | " + string.Join(", ", listOfAllEmployees));
+                ModelState.AddModelError("RequestedTime", employee.FullName + " already has somone scheduled at that time. Other employees available: " + listOfEmployees.Count + " | " + string.Join(", ", listOfEmployees));
             }
 
             if (ModelState.IsValid)

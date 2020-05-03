@@ -8,7 +8,8 @@
 
 <div class="text-center">
     <h3 >Welcome To the Event Scheduler</h3>
-    <h5> Currently showing @numberOfDays days for at-a-glance scheduling.</h5> 
+    <h5> Currently showing @numberOfDays days for at-a-glance scheduling.</h5>      <h6 style="color:red;">Key: OW= Outside Window for Employee, DB = Double Booked</h6>
+
 </div>
 
 <h5>Today is:</h5>
@@ -33,7 +34,7 @@
                 @foreach(var emp in ViewBag.Employees)  
                 {
                     <th>
-                        <span title="Edit information for: @emp.FullName"><a  asp-action="Edit" asp-route-id="@emp.Id" asp-controller="Employee">@emp.FullName</a> </span>
+                        <span title="Edit information for: @emp.FullName"><a  asp-action="Edit" asp-route-id="@emp.Id" asp-controller="Employee">@emp.FullName (@emp.StartTime.ToString("h:mm tt") - @emp.EndTime.ToString("h:mm tt"))</a> </span>
                     </th>      
                 }
                 <th></th>
@@ -105,49 +106,82 @@
                 <td class="timeColumn">
                     @timeSlot.ToString("hh:mm tt")
                 </td>
-                @foreach(var emp in ViewBag.Employees)
-                {
-                    var matchingAppointment = Model
-                    .Where(st => st.RequestedTime == timeSlot)
-                    .Where(st=> st.EmployeeId == emp.Id)
-                    .FirstOrDefault();
+                
+                    @foreach(var emp in ViewBag.Employees)
+                    
+                    {
+                            var matchingAppointments = Model
+                            .Where(st=> st.RequestedTime.ToString("D")==calendarDate.ToString("D"))
+                            .Where(st => st.RequestedTime.ToString("hh tt") == timeSlot.ToString("hh tt"))
+                            .Where(st=> st.EmployeeId == emp.Id)
+                            .OrderBy(st=> st.RequestedTime);
+                            
 
-                    var appointmentWindowClass="";
-                    if((timeSlot.TimeOfDay >= emp.StartTime.TimeOfDay) && (timeSlot.TimeOfDay <= emp.EndTime.TimeOfDay))
-                    {
-                        appointmentWindowClass="insideWindow";
-                    }
-                    else
-                    {
-                        appointmentWindowClass="outsideWindow";
-    
-                    }
 
-                    if(matchingAppointment == null) 
-                    {
-                        if(appointmentWindowClass=="insideWindow")
-                        {
-                        <td class="@appointmentWindowClass">                                                
-                            <span title="Add @timeSlot.ToString("MM/dd/yyyy h:mm tt")
-                                         appointment with @emp.FullName"><a asp-action="Create" asp-route-id="@emp.Id" asp-route-time="@timeSlot" asp-controller="Appointment">Add</a> </span> 
-                        </td>
-                        }
-                        else 
-                        {
-                            <td class="@appointmentWindowClass"></td>
-                            }
+                                var appointmentWindowClass="";
+                                if((timeSlot.TimeOfDay >= emp.StartTime.TimeOfDay) && (timeSlot.TimeOfDay <= emp.EndTime.TimeOfDay))
+                                {
+                                    appointmentWindowClass="insideWindow";
+                                }
+                                else
+                                {
+                                    appointmentWindowClass="outsideWindow";
+                
+                                }
+
+                                if(matchingAppointments.Count() == 0) 
+                                {
+                                    if(appointmentWindowClass=="insideWindow")
+                                    {
+                                    <td class="@appointmentWindowClass">                                                
+                                        <span title="Add @timeSlot.ToString("MM/dd/yyyy h:mm tt")
+                                                    appointment with @emp.FullName">
+                                            <a asp-action="Create" asp-route-id="@emp.Id" asp-route-time="@timeSlot" asp-controller="Appointment">Add</a> 
+                                        </span> 
+                                    </td>
+                                    }
+                                    else 
+                                    {
+                                        <td class="@appointmentWindowClass"> </td>
+                                    }
+                                }
+                                else
+                                {
+                                    <td class="isappointment">
+                                          
+                                        @foreach(var appointment in @matchingAppointments)
+                                        {
+                                            @if((appointment.RequestedTime.TimeOfDay < emp.StartTime.TimeOfDay) || (appointment.RequestedTime.TimeOfDay > emp.EndTime.TimeOfDay))
+                                        {
+                                                <a><text style="color:red;">OW</text></a>                                 
+                                        }
+                                            var doubleBooked = matchingAppointments
+                                            .Where(st=> st.RequestedTime==appointment.RequestedTime);
+                                            @if(@doubleBooked.Count()>1)
+                                            {
+                                                <a><text style="color:red;">DB</text></a>     
+                                            }
+
+
+
+
+                                            <span title="Name: @appointment.Name    |    Appointment: @appointment.RequestedTime.ToString("MM/dd/yyyy h:mm tt")  |    Notes: @appointment.AppointmentNotes    |    Phone: @appointment.PhoneNumber">
+                                                <a  asp-action="Edit" asp-route-id="@appointment.Id" asp-controller="Appointment">@appointment.RequestedTime.ToString("h:mm") - @appointment.Name </a> 
+                                            </span>
+                                            <br/>
+                                        }
+                                            <br/>
+                                        @if((timeSlot.TimeOfDay >= emp.StartTime.TimeOfDay) && (timeSlot.TimeOfDay <= emp.EndTime.TimeOfDay))
+                                        {
+                                                <span title="Add @timeSlot.ToString("MM/dd/yyyy h:mm tt") appointment with @emp.FullName">
+                                                    <a asp-action="Create" asp-route-id="@emp.Id" asp-route-time="@timeSlot" asp-controller="Appointment">Add</a> 
+                                                </span>                                   
+                                        }
+
+                                    </td>
+                                } 
                     }
-                    else
-                    {
-                        <td class="isappointment">
-                            <span title="Name: @matchingAppointment.Name
-                                         Appointment: @matchingAppointment.RequestedTime.ToString("MM/dd/yyyy h:mm tt")
-                                         With: @emp.FullName
-                                         Notes: @matchingAppointment.AppointmentNotes 
-                                         Phone: @matchingAppointment.PhoneNumber"><a  asp-action="Edit" asp-route-id="@matchingAppointment.Id" asp-controller="Appointment">@matchingAppointment.Name </a> </span>
-                        </td>
-                    }    
-                }
+                
             </tr>
     }    </tbody>
     </table>

@@ -15,10 +15,10 @@ namespace web.Models
         public string FirstName { get; set; }
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
-        [Display(Name = "Start Time")]
+        [Display(Name = "First Appointment")]
         [DataType(DataType.Time)]
         public DateTime StartTime { get; set; }
-        [Display(Name = "End Time")]
+        [Display(Name = "Last Appointment")]
         [DataType(DataType.Time)]
         public DateTime EndTime { get; set; }
         public string FullName
