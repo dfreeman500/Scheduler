@@ -26,8 +26,6 @@ The scheduler will be able to view the schedules and edit/cancel appointments . 
 * Can: create, read, update, and delete appointments
 
 
-
-
 ## **Milestones**
 - [x] Create a GitHub Repo and Start on a Project Plan
 - [ ] Scaffold a new .NET Core MVC Application
@@ -35,3 +33,4 @@ The scheduler will be able to view the schedules and edit/cancel appointments . 
 - [ ] Generating a Code First Database
 - [ ] Creating CRUD Controllers
 - [ ]  Creating CRUD Views
+
