@@ -12,181 +12,192 @@
 
 </div>
 
-<h5>Today is:</h5>
-<div class="outerLoopForTables">
-@for (int i = 0; i < @numberOfDays; i++)
-{
-    <div class="loopOfTables">
-
-    @{
-        var calendarDate = DateTime.Today.AddDays(i);
-        }
-    <h2>  @calendarDate.ToString("D")  </h2>                        
-    
-@*Displays table of appointments*@
-    <div>
-    <table class="table" >
-        <thead>
-            <tr>
-                <th>
-                    Time 
-                </th>
-                @foreach(var emp in ViewBag.Employees)  
-                {
-                    <th>
-                        <span title="Edit information for: @emp.FullName"><a  asp-action="Edit" asp-route-id="@emp.Id" asp-controller="Employee">@emp.FullName (@emp.StartTime.ToString("h:mm tt") - @emp.EndTime.ToString("h:mm tt"))</a> </span>
-                    </th>      
-                }
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-    @{
-  
-    var today = DateTime.Now;
-    var timeSlots = new List<DateTime> {
-        new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 0, 0, 0),
-        new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 1, 0, 0), 
-        new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 2, 0, 0), 
-        new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 3, 0, 0), 
-        new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 4, 0, 0), 
-        new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 5, 0, 0), 
-        new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 6, 0, 0), 
-        new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 7, 0, 0), 
-        new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 8, 0, 0), 
-        new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 9, 0, 0), 
-        new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 10, 0, 0), 
-        new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 11, 0, 0), 
-        new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 12, 0, 0), 
-        new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 13, 0, 0), 
-        new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 14, 0, 0), 
-        new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 15, 0, 0), 
-        new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 16, 0, 0), 
-        new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 17, 0, 0), 
-        new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 18, 0, 0), 
-        new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 19, 0, 0), 
-        new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 20, 0, 0), 
-        new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 21, 0, 0), 
-        new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 22, 0, 0), 
-        new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 23, 0, 0), 
-        };
-    }
-
-    @{      
-        var tempListOfTodaysAppointments = new List<DateTime> {};
-        foreach(var appointment in Model)
-        {   
-            if (appointment.RequestedTime.Date == calendarDate.Date) 
-                {
-                    tempListOfTodaysAppointments.Add(appointment.RequestedTime);
-                }
-        }
-        foreach(var emp in ViewBag.Employees)
-        {
-            tempListOfTodaysAppointments.Add((calendarDate.Date+emp.StartTime.TimeOfDay));
-            tempListOfTodaysAppointments.Add(calendarDate.Date+emp.EndTime.TimeOfDay);
-        }
-        @*Creates a clone so I can update the timeslots for that particular day*@
-        var newTimeSlots = new List<DateTime>(timeSlots); 
-        @foreach(var time in timeSlots)
-        {
-            if(time<tempListOfTodaysAppointments.Min()||time>tempListOfTodaysAppointments.Max())
-                {
-                    newTimeSlots.Remove(time);
-                }
-        }
-    }
-    @*For each time slot find the appointment that is appropriate for the time slot and employee.
-        If there is an appointment, put that link there including mouse over info. If no appointment
-        but there is a opening, add that link
-    *@
-    @foreach (var timeSlot in newTimeSlots) 
+@if(ViewBag.Employees.Count==0) @*if/else statement protects against 0 employees and crash*@
     {
-            <tr>
-                <td class="timeColumn">
-                    @timeSlot.ToString("hh:mm tt")
-                </td>
-                
-                    @foreach(var emp in ViewBag.Employees)
-                    
+        <span title="Add an Employee to create the the visual at-a-glance schedule">
+            <a asp-action="Create" asp-controller="Employee">Add an Employee to create the the visual at-a-glance schedule</a>
+        </span>
+    }
+    else
+    {
+
+
+    <h5>Today is:</h5>
+    <div class="outerLoopForTables">
+    @for (int i = 0; i < @numberOfDays; i++)
+    {
+        <div class="loopOfTables">
+
+        @{
+            var calendarDate = DateTime.Today.AddDays(i);
+            }
+        <h2>  @calendarDate.ToString("D")  </h2>                        
+        
+    @*Displays table of appointments*@
+        <div>
+        <table class="table" >
+            <thead>
+                <tr>
+                    <th>
+                        Time 
+                    </th>
+                    @foreach(var emp in ViewBag.Employees)  
                     {
-                            var matchingAppointments = Model
-                            .Where(st=> st.RequestedTime.ToString("D")==calendarDate.ToString("D"))
-                            .Where(st => st.RequestedTime.ToString("hh tt") == timeSlot.ToString("hh tt"))
-                            .Where(st=> st.EmployeeId == emp.Id)
-                            .OrderBy(st=> st.RequestedTime);
-                            
+                        <th>
+                            <span title="Edit information for: @emp.FullName"><a  asp-action="Edit" asp-route-id="@emp.Id" asp-controller="Employee">@emp.FullName (@emp.StartTime.ToString("h:mm tt") - @emp.EndTime.ToString("h:mm tt"))</a> </span>
+                        </th>      
+                    }
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+        @{
+    
+        var today = DateTime.Now;
+        var timeSlots = new List<DateTime> {
+            new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 0, 0, 0),
+            new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 1, 0, 0), 
+            new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 2, 0, 0), 
+            new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 3, 0, 0), 
+            new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 4, 0, 0), 
+            new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 5, 0, 0), 
+            new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 6, 0, 0), 
+            new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 7, 0, 0), 
+            new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 8, 0, 0), 
+            new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 9, 0, 0), 
+            new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 10, 0, 0), 
+            new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 11, 0, 0), 
+            new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 12, 0, 0), 
+            new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 13, 0, 0), 
+            new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 14, 0, 0), 
+            new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 15, 0, 0), 
+            new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 16, 0, 0), 
+            new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 17, 0, 0), 
+            new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 18, 0, 0), 
+            new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 19, 0, 0), 
+            new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 20, 0, 0), 
+            new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 21, 0, 0), 
+            new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 22, 0, 0), 
+            new DateTime(calendarDate.Year,calendarDate.Month,calendarDate.Day, 23, 0, 0), 
+            };
+        }
+
+        @{      
+            var tempListOfTodaysAppointments = new List<DateTime> {};
+            foreach(var appointment in Model)
+            {   
+                if (appointment.RequestedTime.Date == calendarDate.Date) 
+                    {
+                        tempListOfTodaysAppointments.Add(appointment.RequestedTime);
+                    }
+            }
+            foreach(var emp in ViewBag.Employees)
+            {
+                tempListOfTodaysAppointments.Add((calendarDate.Date+emp.StartTime.TimeOfDay));
+                tempListOfTodaysAppointments.Add(calendarDate.Date+emp.EndTime.TimeOfDay);
+            }
+            @*Creates a clone so I can update the timeslots for that particular day*@
+            var newTimeSlots = new List<DateTime>(timeSlots); 
+            @foreach(var time in timeSlots)
+            {
+                if(time<tempListOfTodaysAppointments.Min()||time>tempListOfTodaysAppointments.Max())
+                    {
+                        newTimeSlots.Remove(time);
+                    }
+            }
+        }
+        @*For each time slot find the appointment that is appropriate for the time slot and employee.
+            If there is an appointment, put that link there including mouse over info. If no appointment
+            but there is a opening, add that link
+        *@
+        @foreach (var timeSlot in newTimeSlots) 
+        {
+                <tr>
+                    <td class="timeColumn">
+                        @timeSlot.ToString("hh:mm tt")
+                    </td>
+                    
+                        @foreach(var emp in ViewBag.Employees)
+                        
+                        {
+                                var matchingAppointments = Model
+                                .Where(st=> st.RequestedTime.ToString("D")==calendarDate.ToString("D"))
+                                .Where(st => st.RequestedTime.ToString("hh tt") == timeSlot.ToString("hh tt"))
+                                .Where(st=> st.EmployeeId == emp.Id)
+                                .OrderBy(st=> st.RequestedTime);
+                                
 
 
-                                var appointmentWindowClass="";
-                                if((timeSlot.TimeOfDay >= emp.StartTime.TimeOfDay) && (timeSlot.TimeOfDay <= emp.EndTime.TimeOfDay))
-                                {
-                                    appointmentWindowClass="insideWindow";
-                                }
-                                else
-                                {
-                                    appointmentWindowClass="outsideWindow";
-                
-                                }
-
-                                if(matchingAppointments.Count() == 0) 
-                                {
-                                    if(appointmentWindowClass=="insideWindow")
+                                    var appointmentWindowClass="";
+                                    if((timeSlot.TimeOfDay >= emp.StartTime.TimeOfDay) && (timeSlot.TimeOfDay <= emp.EndTime.TimeOfDay))
                                     {
-                                    <td class="@appointmentWindowClass">                                                
-                                        <span title="Add @timeSlot.ToString("MM/dd/yyyy h:mm tt")
-                                                    appointment with @emp.FullName">
-                                            <a asp-action="Create" asp-route-id="@emp.Id" asp-route-time="@timeSlot" asp-controller="Appointment">Add</a> 
-                                        </span> 
-                                    </td>
+                                        appointmentWindowClass="insideWindow";
                                     }
-                                    else 
+                                    else
                                     {
-                                        <td class="@appointmentWindowClass"> </td>
+                                        appointmentWindowClass="outsideWindow";
+                    
                                     }
-                                }
-                                else
-                                {
-                                    <td class="isappointment">
-                                          
-                                        @foreach(var appointment in @matchingAppointments)
+
+                                    if(matchingAppointments.Count() == 0) 
+                                    {
+                                        if(appointmentWindowClass=="insideWindow")
                                         {
-                                            @if((appointment.RequestedTime.TimeOfDay < emp.StartTime.TimeOfDay) || (appointment.RequestedTime.TimeOfDay > emp.EndTime.TimeOfDay))
-                                        {
-                                                <a><text style="color:red;">OW</text></a>                                 
+                                        <td class="@appointmentWindowClass">                                                
+                                            <span title="Add @timeSlot.ToString("MM/dd/yyyy h:mm tt")
+                                                        appointment with @emp.FullName">
+                                                <a asp-action="Create" asp-route-id="@emp.Id" asp-route-time="@timeSlot" asp-controller="Appointment">Add</a> 
+                                            </span> 
+                                        </td>
                                         }
-                                            var doubleBooked = matchingAppointments
-                                            .Where(st=> st.RequestedTime==appointment.RequestedTime);
-                                            @if(@doubleBooked.Count()>1)
+                                        else 
+                                        {
+                                            <td class="@appointmentWindowClass"> </td>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <td class="isappointment">
+                                            
+                                            @foreach(var appointment in @matchingAppointments)
                                             {
-                                                <a><text style="color:red;">DB</text></a>     
+                                                @if((appointment.RequestedTime.TimeOfDay < emp.StartTime.TimeOfDay) || (appointment.RequestedTime.TimeOfDay > emp.EndTime.TimeOfDay))
+                                            {
+                                                    <a><text style="color:red;">OW</text></a>                                 
+                                            }
+                                                var doubleBooked = matchingAppointments
+                                                .Where(st=> st.RequestedTime==appointment.RequestedTime);
+                                                @if(@doubleBooked.Count()>1)
+                                                {
+                                                    <a><text style="color:red;">DB</text></a>     
+                                                }
+
+
+
+
+                                                <span title="Name: @appointment.Name    |    Appointment: @appointment.RequestedTime.ToString("MM/dd/yyyy h:mm tt")  |    Notes: @appointment.AppointmentNotes    |    Phone: @appointment.PhoneNumber">
+                                                    <a  asp-action="Edit" asp-route-id="@appointment.Id" asp-controller="Appointment">@appointment.RequestedTime.ToString("h:mm") - @appointment.Name </a> 
+                                                </span>
+                                                <br/>
+                                            }
+                                                <br/>
+                                            @if((timeSlot.TimeOfDay >= emp.StartTime.TimeOfDay) && (timeSlot.TimeOfDay <= emp.EndTime.TimeOfDay))
+                                            {
+                                                    <span title="Add @timeSlot.ToString("MM/dd/yyyy h:mm tt") appointment with @emp.FullName">
+                                                        <a asp-action="Create" asp-route-id="@emp.Id" asp-route-time="@timeSlot" asp-controller="Appointment">Add</a> 
+                                                    </span>                                   
                                             }
 
-
-
-
-                                            <span title="Name: @appointment.Name    |    Appointment: @appointment.RequestedTime.ToString("MM/dd/yyyy h:mm tt")  |    Notes: @appointment.AppointmentNotes    |    Phone: @appointment.PhoneNumber">
-                                                <a  asp-action="Edit" asp-route-id="@appointment.Id" asp-controller="Appointment">@appointment.RequestedTime.ToString("h:mm") - @appointment.Name </a> 
-                                            </span>
-                                            <br/>
-                                        }
-                                            <br/>
-                                        @if((timeSlot.TimeOfDay >= emp.StartTime.TimeOfDay) && (timeSlot.TimeOfDay <= emp.EndTime.TimeOfDay))
-                                        {
-                                                <span title="Add @timeSlot.ToString("MM/dd/yyyy h:mm tt") appointment with @emp.FullName">
-                                                    <a asp-action="Create" asp-route-id="@emp.Id" asp-route-time="@timeSlot" asp-controller="Appointment">Add</a> 
-                                                </span>                                   
-                                        }
-
-                                    </td>
-                                } 
-                    }
-                
-            </tr>
-    }    </tbody>
-    </table>
-    <br/>
-    </div>
+                                        </td>
+                                    } 
+                        }
+                    
+                </tr>
+        }    </tbody>
+        </table>
+        <br/>
+        </div>
+        </div>
+    }
     </div>
 }
-</div>
