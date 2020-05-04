@@ -29,15 +29,14 @@ This is an event scheduler. A suggested use would be at a conference that lasted
     * For each hour, appointments will be listed for each employee. Hovering over the appointment link shows name, phone number, appointment notes, and appointment date/time. Clicking an appointment link routes the user to the appointment edit function. 
     * **D**ouble **B**ooked apointments and appointments **O**utside the **W**indow for work will be coded with **DB** and **OW** respectively indicating that status.
     * Clicking on an employee link allows for editing of the information for that employee. Changes in the employee's work window will change the visual view of the schedule for that day as well any **OW** coding.
+   
+
 ***
---> Home Index, At a glance view showing hover information for an established appointment
-![Home At-a-glance view](images/Home_View_Hover.png)    
+-->Home Index, at a glance view showing double booked coding, multiple appointments in hour span, appointments outside of work window, message over established appointment with mouse hover
+![Home At-a-glance view](images/DB_OW_Multiple.png) 
 ***
 --> Home Index, At a glance view showing hover for adding an appointment
 ![Home At-a-glance view](images/Home_View_Hover_Add.png)  
-***
--->Home Index, at a glance view showing double booked coding, multiple appointments in hour span, appointments outside of work window
-![Home At-a-glance view](images/DB_OW_Multiple.png) 
 ***
 
 * Employee/Index Page
@@ -49,17 +48,17 @@ This is an event scheduler. A suggested use would be at a conference that lasted
 * Apointments/Index Page
     * Allows appointments to be created, read, updated, and deleted.
     * Search/filter function is available for Name, Phone Number, and Appointment Notes.
-    * Appointments are sorted by chronological order by default but other fields can be sorted with and without filter present.
-    * A message under the search box will indicate 1.) the number of entries displayed, 2.) whether the filter/search function is being used, 3.) the search filter,.
+    * Appointments are sorted by chronological order by default. Fields can be sorted with and without filter present.
+    * A message under the search box will indicate 1.) the number of entries displayed, 2.) whether the filter/search function is being used, 3.) the search filter.
     * If no records are found with a search, a message will also display in the table.
     * Upon attempted creation of an appointment that overlaps with another appointment on that same employee -- an error message will display and indicate which employees have an opening at that time. 
     * Upon attempted creation of an appointment that is scheduled outside of employee's work window -- an error message will display showing the work window of that employee. 
     * After 'valid' appointment creation, the user can purposely doublebook an appointment or set an appointment outside of the employee's work window by editing the appointment. Coding will appear on the appointments index page (ex: DB, OW) where applicable.
 ***
---> View of the appointments Page
+--> View of the appointments Page - appointments sorted by chronological order by default, OW and DB coding present
 ![Appointments Page](images/Appointments_Page.png)
 ***
---> Appointment Search Function
+--> Appointment Search Function with sort by name applied within search filter
 ![Appointment Search Function](images/Appointment_Search.png)
 ***
 --> Outside work window error/validation
