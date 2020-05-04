@@ -1,4 +1,4 @@
-@model IEnumerable<web.Models.Appointment>
+@model PaginatedList<web.Models.Appointment>
 
 @{
     ViewData["Title"] = "Index";
@@ -9,40 +9,38 @@
 <p>
     <a asp-action="Create">Create New Appointment</a>
 </p>
+   <form asp-action="Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Search within Name, Phone Number, and Appointment Notes: <br/>
+            <input type="text" name="SearchString" value="@ViewData["currentFilter"]" />
+            <input type="submit" value="Search" class="btn btn-default" /> |
+            <a asp-action="Index">Back to Full List</a> 
 
-    @using(Html.BeginForm("Index", "Appointment", FormMethod.Get))  @* Search box*@
-    {
-        <b>Search By:</b>
-        @Html.RadioButton("searchBy", "Name",true) <text> Name </text>
-        @Html.RadioButton("searchBy", "Phone Number") <text> Phone </text>
-        @Html.RadioButton("searchBy", "Appointment Notes") <text> Appointment Notes </text>
-       @* @Html.RadioButton("searchBy", "Employee") <text> Employee </text>
-        @Html.RadioButton("searchBy", "Requested Time") <text> Requested Time </text><br />*@
-        <h6> </h6>
-        @Html.TextBox("search") <input type="submit" value="search" /> <a asp-action="Index" asp-controller="Appointment">Clear Search</a>
-        <div style="color:red;"><text> Showing @Model.Count() Entries @ViewBag.searchResultMessage </text> </div>  
-        
-   }
-
+        </p>
+    </div>
+</form>
+<div style="color:red;"><text> Showing @Model.Count() Entries @{if(@ViewData["CurrentFilter"] == null) { <text>with no filters applied</text>}else{<text> with the filter set to '@ViewData["CurrentFilter"]' </text>}}  </text> </div>  
 <table class="table">
     <thead>
         <tr>
             <th>
             </th> @*adds column for enumeration*@
             <th>
-            @Html.ActionLink("Name", "Index", new { sortOrder = ViewBag.NameSort })
+            <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Name</a>
+
             </th>
             <th>
-                @Html.ActionLink("Phone Number", "Index", new {sortOrder = ViewBag.PhoneNumberSort})
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["PhoneNumberSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Phone Number</a>
             </th>
             <th>
-                @Html.ActionLink("Appointment Notes", "Index", new {sortOrder = ViewBag.AppointmentNotesSort})
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["AppointmentNotesSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Appointment Notes</a>
             </th>
             <th>
-                @Html.ActionLink("Employee", "Index", new {sortOrder = ViewBag.EmployeeSort})
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["EmployeeSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Employee</a>
             </th>
             <th>
-                @Html.ActionLink("Requested Time", "Index", new {sortOrder = ViewBag.RequestedTimeSort})
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["RequestedTimeSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Appointment</a>
             </th>
             <th></th>
         </tr>
@@ -108,4 +106,22 @@
     </table>
 
 
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
 
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>

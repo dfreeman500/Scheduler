@@ -20,81 +20,76 @@ namespace web.Controllers
         }
 
         // GET: Appointment
-        public async Task<IActionResult> Index(string searchBy, string search, string sortOrder)
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
-            //Sorting logic
-                ViewBag.RequestedTimeSort = String.IsNullOrEmpty(sortOrder) ? "RequestedTime_desc" : "";
-                ViewBag.NameSort = sortOrder == "Name" ? "Name_desc" : "Name";
-                ViewBag.EmployeeSort = sortOrder == "Employee" ? "Employee_desc" : "Employee";
-                ViewBag.AppointmentNotesSort = sortOrder == "AppointmentNotes" ? "AppointmentNotes_desc" : "AppointmentNotes";
-                ViewBag.PhoneNumberSort = sortOrder == "PhoneNumber" ? "PhoneNumber_desc" : "PhoneNumber";
+            ViewData["CurrentSort"] = sortOrder;
 
-                var sortedAppointments = from s in _context.Appointments.Include(a => a.Employee) select s;
-                switch (sortOrder)
-                {
-                    case "Name_desc":
-                        sortedAppointments = sortedAppointments.OrderByDescending(x => x.Name);
-                        break;
-                    case "Name":
-                        sortedAppointments = sortedAppointments.OrderBy(x => x.Name);
-                        break;
-                    case "PhoneNumber_desc":
-                        sortedAppointments = sortedAppointments.OrderByDescending(x => x.PhoneNumber);
-                        break;
-                    case "PhoneNumber":
-                        sortedAppointments = sortedAppointments.OrderBy(x => x.PhoneNumber);
-                        break;
-                    case "AppointmentNotes_desc":
-                        sortedAppointments = sortedAppointments.OrderByDescending(x => x.AppointmentNotes);
-                        break;
-                    case "AppointmentNotes":
-                        sortedAppointments = sortedAppointments.OrderBy(x => x.AppointmentNotes);
-                        break;
-                    case "Employee_desc":
-                        sortedAppointments = sortedAppointments.OrderByDescending(x => x.Employee);
-                        break;
-                    case "Employee":
-                        sortedAppointments = sortedAppointments.OrderBy(x => x.Employee);
-                        break;
-                    case "RequestedTime_desc":
-                        sortedAppointments = sortedAppointments.OrderByDescending(x => x.RequestedTime);
-                        break;
-                    default:
-                        sortedAppointments = sortedAppointments.OrderBy(x => x.RequestedTime);
-                        break;
-                }
-            //Search Logic
-            ViewBag.searchResultMessage = "for '" + search + "' in the field: '" + searchBy + "'";
-            if (searchBy == "Name")
+            ViewData["RequestedTimeSortParm"] = String.IsNullOrEmpty(sortOrder) ? "RequestedTime_desc" : "";
+            ViewData["NameSortParm"] = sortOrder == "Name" ? "Name_desc" : "Name";
+            ViewData["EmployeeSortParm"] = sortOrder == "Employee" ? "Employee_desc" : "Employee";
+            ViewData["AppointmentNotesSortParm"] = sortOrder == "AppointmentNotes" ? "AppointmentNotes_desc" : "AppointmentNotes";
+            ViewData["PhoneNumberSortParm"] = sortOrder == "PhoneNumber" ? "PhoneNumber_desc" : "PhoneNumber";
+
+            if (searchString != null)
             {
-                return View(await sortedAppointments.Include(a => a.Employee).Where(x => x.Name.Contains(search) || search == null).ToListAsync());
+                pageNumber = 1;
             }
-            if (searchBy == "Phone Number")
-            {
-                return View(await sortedAppointments.Include(a => a.Employee).Where(x => x.PhoneNumber.Contains(search) || search == null).ToListAsync());
-            }
-            if (searchBy == "Appointment Notes")
-            {
-                return View(await sortedAppointments.Include(a => a.Employee).Where(x => x.AppointmentNotes.Contains(search) || search == null).ToListAsync());
-            }
-            // if (searchBy == "Employee")
-            // {
-            //     return View(await _context.Appointments.Include(a=> a.Employee).Where(x => x.Employee.Contains(search) || search == null).ToListAsync());
-            // }
-            // if (searchBy == "RequestedTime")
-            // {
-            //     return View(await _context.Appointments.Where(x => x.RequestedTime == search || search == null).ToListAsync());
-            // }
             else
             {
-                ViewBag.searchResultMessage = " - No search filters currently applied";
-                var context = _context.Appointments.Include(a => a.Employee);
+                searchString = currentFilter;
+            }
+
+            ViewData["CurrentFilter"] = searchString;
+
+            var appointments = from s in _context.Appointments.Include(a => a.Employee) select s;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                appointments = appointments.Include(a => a.Employee)
+                .Where(s => s.Name.Contains(searchString)
+                 || s.PhoneNumber.Contains(searchString)
+                 || s.AppointmentNotes.Contains(searchString));
+            }
+
+            switch (sortOrder)
+            {
+                case "Name_desc":
+                    appointments = appointments.OrderByDescending(x => x.Name);
+                    break;
+                case "Name":
+                    appointments = appointments.OrderBy(x => x.Name);
+                    break;
+                case "PhoneNumber_desc":
+                    appointments = appointments.OrderByDescending(x => x.PhoneNumber);
+                    break;
+                case "PhoneNumber":
+                    appointments = appointments.OrderBy(x => x.PhoneNumber);
+                    break;
+                case "AppointmentNotes_desc":
+                    appointments = appointments.OrderByDescending(x => x.AppointmentNotes);
+                    break;
+                case "AppointmentNotes":
+                    appointments = appointments.OrderBy(x => x.AppointmentNotes);
+                    break;
+                case "Employee_desc":
+                    appointments = appointments.OrderByDescending(x => x.Employee);
+                    break;
+                case "Employee":
+                    appointments = appointments.OrderBy(x => x.Employee);
+                    break;
+                case "RequestedTime_desc":
+                    appointments = appointments.OrderByDescending(x => x.RequestedTime);
+                    break;
+                default:
+                    appointments = appointments.OrderBy(x => x.RequestedTime);
+                    break;
             }
 
 
-            return View(await sortedAppointments.ToListAsync());
 
 
+
+            int pageSize = 100;
+            return View(await PaginatedList<Appointment>.CreateAsync(appointments.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         // GET: Appointment/Details/5
@@ -168,15 +163,15 @@ namespace web.Controllers
 
             //Finds employees where the appointment would be outside of work window
             var listOfEmployeesOutsideWindow = _context.Employees
-            .Where(x => x.StartTime.TimeOfDay>appointment.RequestedTime.TimeOfDay || x.EndTime.TimeOfDay<appointment.RequestedTime.TimeOfDay)
-            .ToList();    
-            
+            .Where(x => x.StartTime.TimeOfDay > appointment.RequestedTime.TimeOfDay || x.EndTime.TimeOfDay < appointment.RequestedTime.TimeOfDay)
+            .ToList();
+
 
             //removes employee names from listOfEmployees when the appointment is outside work window
-            foreach(var emp in listOfEmployeesOutsideWindow)
+            foreach (var emp in listOfEmployeesOutsideWindow)
             {
                 listOfEmployees.Remove(emp.FullName);
-            }    
+            }
 
             //removes employee name from listOfEmployees when that employee has an overlapping time - results in only available employees being shown
             foreach (var emp in appointmentsWithOverlappingTimes)

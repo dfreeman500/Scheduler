@@ -48,10 +48,9 @@ This is an event scheduler. A suggested use would be at a conference that lasted
 ***
 * Apointments/Index Page
     * Allows appointments to be created, read, updated, and deleted.
-    * In nonfiltered/nonsearched view, the appointments are sorted in chronological order by default.
-    * In nonfiltered/nonsearched views, sorting by some fields (descending/ascending) is allowed.
-    * Search/filter function is available for some fields.
-    * A message under the search box will indicate 1.) the number of entries displayed, 2.) whether the filter/search function is being used, 3.) the search entry, and 4.) the field that is being searched.
+    * Search/filter function is available for Name, Phone Number, and Appointment Notes.
+    * Appointments are sorted by chronological order by default but other fields can be sorted with and without filter present.
+    * A message under the search box will indicate 1.) the number of entries displayed, 2.) whether the filter/search function is being used, 3.) the search filter,.
     * If no records are found with a search, a message will also display in the table.
     * Upon attempted creation of an appointment that overlaps with another appointment on that same employee -- an error message will display and indicate which employees have an opening at that time. 
     * Upon attempted creation of an appointment that is scheduled outside of employee's work window -- an error message will display showing the work window of that employee. 
