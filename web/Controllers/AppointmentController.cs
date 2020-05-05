@@ -22,6 +22,8 @@ namespace web.Controllers
         // GET: Appointment
         public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
+            ViewBag.Employees = _context.Employees.ToList();  
+
             ViewData["CurrentSort"] = sortOrder;
 
             ViewData["RequestedTimeSortParm"] = String.IsNullOrEmpty(sortOrder) ? "RequestedTime_desc" : "";

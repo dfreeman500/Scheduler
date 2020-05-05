@@ -8,7 +8,19 @@
 @*<h1>Index</h1>*@
 
 <p>
-    <a asp-action="Create">Create New Appointment</a>
+                @if(ViewBag.Employees.Count==0) @*if/else statement protects against 0 employees and crash*@
+                {
+                    <span title="No employees found, add an employee before creating an appointment">
+                        <a asp-action="Create" asp-controller="Employee">Add an Employee before creating an appointment</a>
+                    </span>
+                }
+                else
+                {
+                    <a asp-action="Create">Create New Appointment</a>
+                }   
+
+
+    
 </p>
    <form asp-action="Index" method="get">
     <div class="form-actions no-color">
