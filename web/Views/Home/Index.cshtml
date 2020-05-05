@@ -96,6 +96,10 @@
                 tempListOfTodaysAppointments.Add((calendarDate.Date+emp.StartTime.TimeOfDay));
                 tempListOfTodaysAppointments.Add(calendarDate.Date+emp.EndTime.TimeOfDay);
             }
+            var earliestTime = tempListOfTodaysAppointments.Min();
+            tempListOfTodaysAppointments.Add(new DateTime(earliestTime.Year,earliestTime.Month,earliestTime.Day, earliestTime.Hour, 0, 0));
+            
+
             @*Creates a clone so I can update the timeslots for that particular day*@
             var newTimeSlots = new List<DateTime>(timeSlots); 
             @foreach(var time in timeSlots)
